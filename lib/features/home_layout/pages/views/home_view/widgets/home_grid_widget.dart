@@ -2,16 +2,18 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../core/extensions/extensions.dart';
+import '../../../../../../core/extensions/extensions.dart';
 
 class HomeGridWidget extends StatelessWidget {
   final String title;
   final dynamic gridList;
+  final BoxFit? imageFit;
 
   const HomeGridWidget({
     super.key,
     required this.title,
     required this.gridList,
+    this.imageFit,
   });
 
   @override
@@ -42,7 +44,8 @@ class HomeGridWidget extends StatelessWidget {
         ).setHorizontalPadding(context, 16.w),
         Expanded(
           child: GridView.builder(
-            padding: EdgeInsets.only(top: 16.h, left: 16.w),
+            padding:
+                EdgeInsets.only(top: 16.h, left: 16.w, right: 16.w, bottom: 0),
             scrollDirection: Axis.horizontal,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
@@ -78,7 +81,7 @@ class HomeGridWidget extends StatelessWidget {
                   shape: BoxShape.circle,
                   image: DecorationImage(
                     image: imageProvider,
-                    fit: BoxFit.cover,
+                    fit: imageFit ?? BoxFit.cover,
                   ),
                 ),
               );
@@ -107,20 +110,3 @@ class HomeGridWidget extends StatelessWidget {
     );
   }
 }
-
-// ClipRRect(
-//     borderRadius: BorderRadius.circular(50),
-//     child: CachedNetworkImage(
-//       imageUrl: category.imageUrl ?? "",
-//       height: 50,
-//       width: 50,
-//       placeholder: (context, url) => const Center(
-//         child: CircularProgressIndicator(),
-//       ),
-//       errorWidget: (context, url, error) => const Center(
-//         child: Icon(Icons.error),
-//       ),
-//     ),
-//   ),
-//   Text(category.name!),
-// ],

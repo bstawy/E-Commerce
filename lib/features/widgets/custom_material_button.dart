@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../extensions/extensions.dart';
+import '../../../core/extensions/extensions.dart';
 
 class CustomMaterialButton extends StatelessWidget {
   final String title;
