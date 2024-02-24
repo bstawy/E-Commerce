@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/config/page_route_names.dart';
-import '../../../core/widgets/custom_input_field.dart';
-import '../../../core/widgets/custom_material_button.dart';
-import '../../../core/widgets/custom_text_field.dart';
 import '../../../main.dart';
+import '../../widgets/custom_input_field.dart';
+import '../../widgets/custom_material_button.dart';
+import '../../widgets/custom_text_field.dart';
 
 class SignUpForm extends StatelessWidget {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -53,7 +53,7 @@ class SignUpForm extends StatelessWidget {
             title: "Sign Up",
             backgroundColor: Colors.white,
             onClicked: () {
-              navigatorKey.currentState!.pushNamed(PageRouteNames.home);
+              navigatorKey.currentState!.pushNamed(PageRouteNames.homeLayout);
             },
           ),
         ],
