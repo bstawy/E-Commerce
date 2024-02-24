@@ -2,13 +2,17 @@ import 'package:flutter/material.dart';
 
 class ApplicationTheme {
   static ThemeData applicationTheme = ThemeData(
+    // Color scheme configuration
     colorScheme: ColorScheme.fromSeed(
       seedColor: const Color(0xff004182),
       primary: const Color(0xff004182),
+      onPrimary: const Color(0xff06004F),
       background: const Color(0xffffffff),
       onBackground: const Color(0xff004182).withOpacity(0.3),
       secondary: const Color(0xff000000).withOpacity(0.7),
     ),
+
+    // App bar theme configuration
     appBarTheme: const AppBarTheme(
       backgroundColor: Colors.transparent,
       elevation: 0,
@@ -20,6 +24,20 @@ class ApplicationTheme {
         fontWeight: FontWeight.w500,
       ),
     ),
+
+    // Bottom nav bar theme configuration
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      backgroundColor: Color(0xff004182),
+      elevation: 0,
+      unselectedLabelStyle: TextStyle(fontSize: 0),
+      selectedLabelStyle: TextStyle(fontSize: 0),
+      enableFeedback: true,
+      showUnselectedLabels: false,
+      showSelectedLabels: false,
+      type: BottomNavigationBarType.fixed,
+    ),
+
+    // Text theme configuration
     fontFamily: "Poppins",
     textTheme: const TextTheme(
       titleLarge: TextStyle(
@@ -38,7 +56,7 @@ class ApplicationTheme {
         fontWeight: FontWeight.w500,
       ),
       bodyLarge: TextStyle(
-        color: Color(0xff004182),
+        color: Color(0xff06004F),
         fontSize: 14,
         fontWeight: FontWeight.w500,
       ),
