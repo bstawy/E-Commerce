@@ -10,8 +10,9 @@ class LoadingState extends HomeStates {}
 class SuccessState extends HomeStates {
   final List<Category>? categories;
   final List<Brand>? brands;
+  final List<Product>? products;
 
-  SuccessState(this.categories, this.brands);
+  SuccessState(this.categories, this.brands, this.products);
 }
 
 class ErrorState extends HomeStates {
