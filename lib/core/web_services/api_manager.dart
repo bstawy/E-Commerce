@@ -4,6 +4,8 @@ import 'package:injectable/injectable.dart';
 
 import '../../data/models/home/brands_response/brands_response.dart';
 import '../../data/models/home/categories_response/categories_response.dart';
+import '../../data/models/home/products_response/products_response.dart';
+import '../../domain/repository/home/products_repository.dart';
 import '../config/constants.dart';
 
 @singleton
@@ -55,5 +57,31 @@ class ApiManager {
     debugPrint("${allBrands.results}");
 
     return allBrands;
+  }
+
+  Future<ProductsResponse> getProducts({ProductsSort? sortBy}) async {
+    Map<String, dynamic>? params = {};
+    Response response;
+
+    if (sortBy != null) {
+      params['sort'] = sortBy.value;
+      response = await dio.get(EndPoints.allProducts, queryParameters: params);
+    } else {
+      response = await dio.get(EndPoints.allProducts);
+    }
+
+    debugPrint("==================== Api Call ====================");
+    debugPrint(
+        "== URL Request: ${Constants.baseUrl}${EndPoints.allProducts} ==");
+    debugPrint("===================================================");
+
+    ProductsResponse allProducts = ProductsResponse.fromJson(response.data);
+
+    debugPrint("==================== Api Response ====================");
+    debugPrint("== ${allProducts.results ?? "null"} ==");
+    debugPrint("===================================================");
+    debugPrint("${allProducts.results}");
+
+    return allProducts;
   }
 }
