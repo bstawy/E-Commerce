@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../extensions/extensions.dart';
+import '../../../core/extensions/extensions.dart';
 
 class CustomHeaderAndSearch extends StatelessWidget {
   const CustomHeaderAndSearch({super.key});
@@ -22,8 +22,8 @@ class CustomHeaderAndSearch extends StatelessWidget {
             "assets/images/route_logo.svg",
             colorFilter: ColorFilter.mode(
                 context.theme.colorScheme.primary, BlendMode.srcIn),
-            width: 66.w,
-            height: 22.h,
+            width: 85.w,
+            height: 42.h,
             fit: BoxFit.contain,
           ),
           Row(
