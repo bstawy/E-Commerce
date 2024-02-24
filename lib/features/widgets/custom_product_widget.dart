@@ -148,8 +148,8 @@ class _CustomProductWidgetState extends State<CustomProductWidget> {
                     children: [
                       Text(
                         "Review (${widget.product.ratingsAverage})",
-                        style: context.theme.textTheme.bodyLarge!.copyWith(
-                          fontWeight: FontWeight.w400,
+                        style: context.theme.textTheme.bodySmall!.copyWith(
+                          color: const Color(0xff06004F),
                         ),
                       ),
                       SvgPicture.asset("assets/icons/rating_icon.svg")
