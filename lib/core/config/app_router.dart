@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../features/home_layout/pages/layout.dart';
-import '../../features/login/pages/login_screen.dart';
-import '../../features/sign_up/pages/sign_up_screen.dart';
+import '../../features/auth/manager/auth_cubit.dart';
+import '../../features/auth/pages/login/login_screen.dart';
+import '../../features/auth/pages/register/register_screen.dart';
+import '../../features/home_layout/manager/home_layout_cubit.dart';
+import '../../features/home_layout/pages/home_layout.dart';
+import '../di/di.dart';
 import 'page_route_names.dart';
 
 class AppRouter {
@@ -10,19 +14,37 @@ class AppRouter {
     switch (settings.name) {
       case PageRouteNames.initial:
         return MaterialPageRoute(
-            builder: (context) => const LoginScreen(), settings: settings);
+          builder: (_) => BlocProvider(
+            lazy: false,
+            create: (_) => getIt<HomeLayoutCubit>(),
+            child: const HomeLayout(),
+          ),
+          settings: settings,
+        );
+
+      case PageRouteNames.login:
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (context) => getIt<AuthCubit>(),
+            child: const LoginScreen(),
+          ),
+          settings: settings,
+        );
 
       case PageRouteNames.signUp:
         return MaterialPageRoute(
-            builder: (context) => const SignUpScreen(), settings: settings);
-
-      case PageRouteNames.homeLayout:
-        return MaterialPageRoute(
-            builder: (context) => Layout(), settings: settings);
+          builder: (context) => BlocProvider(
+            create: (context) => getIt<AuthCubit>(),
+            child: const RegisterScreen(),
+          ),
+          settings: settings,
+        );
 
       default:
         return MaterialPageRoute(
-            builder: (context) => const LoginScreen(), settings: settings);
+          builder: (context) => const HomeLayout(),
+          settings: settings,
+        );
     }
   }
 }
