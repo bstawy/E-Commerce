@@ -2,29 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../core/di/di.dart';
-import '../manager/layout_cubit.dart';
+import '../manager/home_layout_cubit.dart';
 import '../widgets/bottom_nav_bar_icon_widget.dart';
 
-class Layout extends StatelessWidget {
-  Layout({super.key});
-
-  final LayoutCubit layoutCubit = getIt<LayoutCubit>();
+class HomeLayout extends StatelessWidget {
+  const HomeLayout({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LayoutCubit, LayoutState>(
-      bloc: layoutCubit,
+    return BlocConsumer<HomeLayoutCubit, HomeLayoutState>(
+      buildWhen: (previous, current) {
+        if (current is HomeTabState) return true;
+        if (current is CategoriesTabState) return true;
+        if (current is WishListTabState) return true;
+        if (current is ProfileTabState) return true;
+
+        return false;
+      },
       builder: (context, state) {
         return Scaffold(
           body: state.viewTab,
-          bottomNavigationBar: buildBottomNavBar(state),
+          bottomNavigationBar: buildBottomNavBar(context, state),
         );
       },
+      listener: (BuildContext context, HomeLayoutState state) {},
     );
   }
 
-  SizedBox buildBottomNavBar(LayoutState state) {
+  SizedBox buildBottomNavBar(BuildContext context, HomeLayoutState state) {
     return SizedBox(
       height: 55.h,
       child: ClipRRect(
@@ -33,7 +38,8 @@ class Layout extends StatelessWidget {
           topRight: Radius.circular(15.r),
         ),
         child: BottomNavigationBar(
-          onTap: (index) => layoutCubit.onTap(index),
+          onTap: (index) =>
+              BlocProvider.of<HomeLayoutCubit>(context).onTap(index),
           items: [
             BottomNavigationBarItem(
               icon: BottomNavBarIconWidget(
@@ -52,7 +58,7 @@ class Layout extends StatelessWidget {
             BottomNavigationBarItem(
               icon: BottomNavBarIconWidget(
                 iconPath: "assets/icons/favorite_icon.svg",
-                isSelected: state is FavoritesTabState,
+                isSelected: state is WishListTabState,
               ),
               label: 'Favorites',
             ),
