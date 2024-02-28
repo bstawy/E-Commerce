@@ -22,8 +22,8 @@ class CustomHeaderAndSearch extends StatelessWidget {
             "assets/images/route_logo.svg",
             colorFilter: ColorFilter.mode(
                 context.theme.colorScheme.primary, BlendMode.srcIn),
-            width: 85.w,
-            height: 42.h,
+            width: 75.w,
+            height: 32.h,
             fit: BoxFit.contain,
           ),
           Row(
