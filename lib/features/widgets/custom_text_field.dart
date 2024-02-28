@@ -9,7 +9,7 @@ class CustomTextField extends StatefulWidget {
   final bool? enabled;
   final int? maxLines, minLines, maxLength;
   final String? obscuringCharacter, value;
-  final String? Function(String?)? onValidate;
+  final String? Function(String?)? validator;
   final void Function(String?)? onChanged, onFieldSubmitted, onSaved;
   final void Function()? onEditingComplete, onTap;
   final TextInputType? keyboardType;
@@ -27,7 +27,7 @@ class CustomTextField extends StatefulWidget {
     this.enabled,
     this.obscuringCharacter,
     this.value,
-    this.onValidate,
+    this.validator,
     this.onChanged,
     this.onFieldSubmitted,
     this.onEditingComplete,
@@ -58,26 +58,31 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return TextFormField(
       controller: widget.controller,
       initialValue: widget.value,
-      validator: widget.onValidate,
+      autofocus: false,
+      validator: widget.validator,
       onChanged: widget.onChanged,
       onEditingComplete: widget.onEditingComplete,
       onFieldSubmitted: widget.onFieldSubmitted,
       onSaved: widget.onSaved,
       onTap: widget.onTap,
-      maxLines: widget.maxLines,
+      maxLines: 1,
       minLines: widget.minLines,
       maxLength: widget.maxLength,
       obscureText: widget.isPassword ?? false ? obscureText : false,
       obscuringCharacter: '*',
-      keyboardType: widget.keyboardType,
+      keyboardType: widget.keyboardType ?? TextInputType.text,
       inputFormatters: widget.inputFormatters,
       enabled: widget.enabled,
       style: theme.textTheme.bodyLarge!.copyWith(
         color: theme.primaryColor,
       ),
+      onTapOutside: (event) {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
       autovalidateMode: AutovalidateMode.onUserInteraction,
       textInputAction: widget.action ?? TextInputAction.done,
       focusNode: widget.focusNode,
+      textAlign: TextAlign.start,
       decoration: InputDecoration(
         fillColor: Colors.white,
         filled: true,

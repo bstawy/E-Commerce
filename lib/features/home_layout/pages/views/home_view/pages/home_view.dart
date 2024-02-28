@@ -1,9 +1,9 @@
+import 'package:e_commerce/core/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../core/di/di.dart';
-import '../../../../../../core/extensions/extensions.dart';
 import '../../../../../../domain/entities/home/brand_entity.dart';
 import '../../../../../../domain/entities/home/category_entity.dart';
 import '../../../../../../domain/entities/home/product_entity.dart';
@@ -13,26 +13,13 @@ import '../widgets/home_grid_widget.dart';
 import '../widgets/home_offers_widget.dart';
 import '../widgets/home_products_List_widget.dart';
 
-class HomeView extends StatefulWidget {
+class HomeView extends StatelessWidget {
   const HomeView({super.key});
-
-  @override
-  State<HomeView> createState() => _HomeViewState();
-}
-
-class _HomeViewState extends State<HomeView> {
-  HomeCubit homeCubit = getIt<HomeCubit>();
-
-  @override
-  void initState() {
-    super.initState();
-    homeCubit.getCategories();
-  }
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<HomeCubit, HomeStates>(
-      bloc: homeCubit,
+      bloc: getIt<HomeCubit>()..getCategories(),
       buildWhen: (previous, current) {
         if (current is LoadingState) return false;
         if (current is ErrorState) return false;
@@ -46,7 +33,11 @@ class _HomeViewState extends State<HomeView> {
       builder: (context, state) {
         if (state is SuccessState) {
           return buildSuccessWidget(
-              state.categories ?? [], state.brands ?? [], state.products ?? []);
+            context,
+            state.categories ?? [],
+            state.brands ?? [],
+            state.products ?? [],
+          );
         }
         return Column(
           children: [
@@ -67,8 +58,8 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  Widget buildSuccessWidget(
-      List<Category> categories, List<Brand> brands, List<Product> products) {
+  Widget buildSuccessWidget(BuildContext context, List<Category> categories,
+      List<Brand> brands, List<Product> products) {
     return Column(
       children: [
         const CustomHeaderAndSearch(),

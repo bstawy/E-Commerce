@@ -1,5 +1,5 @@
 abstract class Failure {
-  String statusCode;
+  String? statusCode;
 
   Failure({required this.statusCode});
 }

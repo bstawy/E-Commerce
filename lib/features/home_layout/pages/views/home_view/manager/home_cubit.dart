@@ -22,7 +22,7 @@ class HomeCubit extends Cubit<HomeStates> {
     this.getCategoriesUseCase,
     this.getBrandsUseCase,
     this.getMostSellingProducts,
-  ) : super(InitialState());
+  ) : super(LoadingState());
 
   void getCategories() async {
     emit(LoadingState());
@@ -30,7 +30,12 @@ class HomeCubit extends Cubit<HomeStates> {
       var categories = await getCategoriesUseCase.execute();
       var brands = await getBrandsUseCase.execute();
       var products = await getMostSellingProducts.execute();
-      emit(SuccessState(categories, brands, products));
+
+      emit(SuccessState(
+        categories: categories,
+        brands: brands,
+        products: products,
+      ));
     } catch (e) {
       emit(ErrorState(e.toString()));
     }
