@@ -1,13 +1,22 @@
+import 'package:e_commerce/core/error/failures.dart';
+
 import 'failure.dart';
 
 class ServerFailure extends Failure {
-  String? error, errorCode;
+  String? statusMsg;
   String? message;
 
   ServerFailure({
     required super.statusCode,
-    this.error,
-    this.errorCode,
+    this.statusMsg,
     this.message,
   });
+
+  factory ServerFailure.fromJson(int? statusCode, dynamic json) {
+    return ServerFailure(
+      statusCode: statusCode.toString(),
+      statusMsg: json['statusMsg'],
+      message: json['message'],
+    );
+  }
 }
