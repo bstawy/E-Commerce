@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:e_commerce/core/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../core/extensions/extensions.dart';
 import '../../domain/entities/home/product_entity.dart';
 
 class CustomProductWidget extends StatefulWidget {

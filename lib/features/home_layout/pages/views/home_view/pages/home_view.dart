@@ -1,9 +1,8 @@
-import 'package:e_commerce/core/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../../core/di/di.dart';
+import '../../../../../../core/extensions/extensions.dart';
 import '../../../../../../domain/entities/home/brand_entity.dart';
 import '../../../../../../domain/entities/home/category_entity.dart';
 import '../../../../../../domain/entities/home/product_entity.dart';
@@ -18,16 +17,18 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    HomeCubit homeCubit = context.read<HomeCubit>();
+
     return BlocConsumer<HomeCubit, HomeStates>(
-      bloc: getIt<HomeCubit>()..getCategories(),
+      bloc: homeCubit..getCategories(),
       buildWhen: (previous, current) {
         if (current is LoadingState) return false;
-        if (current is ErrorState) return false;
+        if (current is FailureState) return false;
         return true;
       },
       listenWhen: (previous, current) {
         if (current is LoadingState) return true;
-        if (current is ErrorState) return true;
+        if (current is FailureState) return true;
         return false;
       },
       builder: (context, state) {
@@ -51,7 +52,7 @@ class HomeView extends StatelessWidget {
         if (state is LoadingState) {
           // show loading
         }
-        if (state is ErrorState) {
+        if (state is FailureState) {
           // show error
         }
       },
