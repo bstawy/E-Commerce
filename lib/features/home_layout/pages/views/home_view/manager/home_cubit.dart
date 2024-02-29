@@ -37,7 +37,7 @@ class HomeCubit extends Cubit<HomeStates> {
         products: products,
       ));
     } catch (e) {
-      emit(ErrorState(e.toString()));
+      emit(FailureState(e.toString()));
     }
   }
 }

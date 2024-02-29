@@ -1,5 +1,3 @@
-import 'package:e_commerce/core/error/failures.dart';
-
 import 'failure.dart';
 
 class ServerFailure extends Failure {

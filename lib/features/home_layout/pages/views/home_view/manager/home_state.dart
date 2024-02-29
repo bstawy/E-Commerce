@@ -13,8 +13,8 @@ class SuccessState extends HomeStates {
   SuccessState({this.categories, this.brands, this.products});
 }
 
-class ErrorState extends HomeStates {
+class FailureState extends HomeStates {
   final String? message;
 
-  ErrorState(this.message);
+  FailureState(this.message);
 }

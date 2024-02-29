@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../core/data_services/web_services/api_manager.dart';
 import '../../../core/error/server_failure.dart';
-import '../../../core/web_services/api_manager.dart';
 import '../../../domain/entities/auth/user_entity.dart';
 import '../../data_source/auth/login_data_source.dart';
 import '../../models/requests/login_request.dart';

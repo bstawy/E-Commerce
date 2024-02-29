@@ -1,8 +1,8 @@
-import 'package:e_commerce/core/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/config/page_route_names.dart';
+import '../../../core/extensions/extensions.dart';
 import '../../widgets/custom_material_button.dart';
 
 class LoginRequiredWidget extends StatelessWidget {
