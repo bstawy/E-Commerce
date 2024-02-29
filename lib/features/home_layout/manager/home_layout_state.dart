@@ -7,7 +7,10 @@ abstract class HomeLayoutState {
 
 class HomeTabState extends HomeLayoutState {
   @override
-  Widget get viewTab => const HomeView();
+  Widget get viewTab => BlocProvider(
+        create: (context) => getIt<HomeCubit>(),
+        child: const HomeView(),
+      );
 }
 
 class CategoriesTabState extends HomeLayoutState {
@@ -17,7 +20,10 @@ class CategoriesTabState extends HomeLayoutState {
 
 class WishListTabState extends HomeLayoutState {
   @override
-  Widget get viewTab => WishListView();
+  Widget get viewTab => BlocProvider(
+        create: (context) => getIt<WishListCubit>(),
+        child: const WishListView(),
+      );
 }
 
 class ProfileTabState extends HomeLayoutState {
