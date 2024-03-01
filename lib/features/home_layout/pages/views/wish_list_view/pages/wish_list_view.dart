@@ -29,9 +29,11 @@ class WishListView extends StatelessWidget {
             return const SafeArea(
                 child: Center(child: CircularProgressIndicator()));
           case SuccessState():
+            if (state.wishList.isEmpty) {
+              return buildEmptyWidget(context);
+            }
             return buildSuccessWidget(context, state);
-          case EmptyState():
-            return buildEmptyWidget(context);
+
           case FailureState():
             debugPrint("Exception: ${state.serverFailure}");
             return Center(child: Text(state.serverFailure.message!));

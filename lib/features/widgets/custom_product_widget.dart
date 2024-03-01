@@ -145,7 +145,7 @@ class CustomProductWidget extends StatelessWidget {
           Positioned(
             right: 0,
             child: BlocConsumer<WishListCubit, WishListState>(
-              bloc: context.read<WishListCubit>(),
+              bloc: wishListCubit,
               listener: (context, state) {},
               builder: (context, state) {
                 if (state is SuccessState) {
@@ -153,7 +153,7 @@ class CustomProductWidget extends StatelessWidget {
                     product.isFavorite = true;
                     return buildFavoriteButton(
                       context,
-                      () async {
+                      () {
                         wishListCubit.removeProductFromWishList(product.id!);
                       },
                     );
@@ -161,7 +161,7 @@ class CustomProductWidget extends StatelessWidget {
                     product.isFavorite = false;
                     return buildFavoriteButton(
                       context,
-                      () {
+                          () {
                         wishListCubit.addProductToWishList(product.id!);
                       },
                     );

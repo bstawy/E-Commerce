@@ -51,12 +51,8 @@ class WishListCubit extends Cubit<WishListState> {
         emit(FailureState(l));
       },
       (r) {
-        if (r!.data!.isEmpty) {
-          emit(EmptyState());
-        } else {
-          wishListProductIds = r.data!.map((product) => product.id).toList();
-          emit(SuccessState(r.data!));
-        }
+        wishListProductIds = r!.data!.map((product) => product.id).toList();
+        emit(SuccessState(r.data!));
       },
     );
   }

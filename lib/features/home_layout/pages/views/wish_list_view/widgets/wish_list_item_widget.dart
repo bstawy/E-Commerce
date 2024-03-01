@@ -51,7 +51,7 @@ class WishListItemWidget extends StatelessWidget {
           ),
           SizedBox(width: 8.w),
           SizedBox(
-            width: 155.w,
+            width: 145.w,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,7 +96,7 @@ class WishListItemWidget extends StatelessWidget {
               ],
             ).setVerticalPadding(context, 8.h),
           ),
-          SizedBox(width: 8.w),
+          const Spacer(),
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -139,7 +139,7 @@ class WishListItemWidget extends StatelessWidget {
                 onClicked: () {},
               ),
             ],
-          ),
+          ).setOnlyPadding(context, 0, 0, 0, 8.w),
         ],
       ),
     );
