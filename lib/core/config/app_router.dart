@@ -17,7 +17,7 @@ class AppRouter {
           builder: (_) => BlocProvider(
             lazy: false,
             create: (_) => getIt<HomeLayoutCubit>(),
-            child: const HomeLayout(),
+            child: HomeLayout(),
           ),
           settings: settings,
         );
@@ -42,7 +42,7 @@ class AppRouter {
 
       default:
         return MaterialPageRoute(
-          builder: (context) => const HomeLayout(),
+          builder: (context) => HomeLayout(),
           settings: settings,
         );
     }
