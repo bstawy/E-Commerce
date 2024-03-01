@@ -2,6 +2,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
+@singleton
 class LocalTokenManager {
   final _storage = const FlutterSecureStorage();
   String? _token;
