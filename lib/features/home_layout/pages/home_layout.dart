@@ -2,14 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../core/data_services/local_storage/local_token_manager.dart';
+import '../../../core/di/di.dart';
 import '../manager/home_layout_cubit.dart';
 import '../widgets/bottom_nav_bar_icon_widget.dart';
+import 'views/wish_list_view/manager/wish_list_cubit.dart';
 
 class HomeLayout extends StatelessWidget {
-  const HomeLayout({super.key});
+  HomeLayout({super.key});
+
+  String? storedToken;
+
+  void checkLogging() async {
+    storedToken = await getIt<LocalTokenManager>().getToken();
+  }
 
   @override
   Widget build(BuildContext context) {
+    checkLogging();
+
+    if (storedToken != null) {
+      getIt<WishListCubit>().getWishList();
+    }
+
     return BlocConsumer<HomeLayoutCubit, HomeLayoutState>(
       buildWhen: (previous, current) {
         if (current is HomeTabState) return true;
