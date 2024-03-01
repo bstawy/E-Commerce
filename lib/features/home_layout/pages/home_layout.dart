@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/data_services/local_storage/local_token_manager.dart';
 import '../../../core/di/di.dart';
+import '../../widgets/custom_offline_builder_widget.dart';
 import '../manager/home_layout_cubit.dart';
 import '../widgets/bottom_nav_bar_icon_widget.dart';
 import 'views/wish_list_view/manager/wish_list_cubit.dart';
@@ -37,7 +38,7 @@ class HomeLayout extends StatelessWidget {
       builder: (context, state) {
         return SafeArea(
           child: Scaffold(
-            body: state.viewTab,
+            body: CustomOfflineBuilderWidget(whenOnlineWidget: state.viewTab),
             bottomNavigationBar: buildBottomNavBar(context, state),
           ),
         );
