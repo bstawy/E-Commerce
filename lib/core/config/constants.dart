@@ -1,8 +1,5 @@
 class Constants {
   static const String baseUrl = "ecommerce.routemisr.com";
-  static const Map<String, String> headers = {
-    "Content-Type": "application/json"
-  };
 }
 
 class EndPoints {
