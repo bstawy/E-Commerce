@@ -5,8 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../core/config/page_route_names.dart';
-import '../../../../core/data_services/local_storage/local_token_manager.dart';
-import '../../../../core/di/di.dart';
 import '../../../../core/extensions/extensions.dart';
 import '../../../../core/services/loading_service.dart';
 import '../../../../core/services/snackbar_service.dart';
@@ -16,16 +14,9 @@ import 'widgets/login_form.dart';
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
-  getToken() async {
-    String? token = await getIt<LocalTokenManager>().getToken();
-    return token;
-  }
-
   @override
   Widget build(BuildContext context) {
     AuthCubit authCubit = context.read<AuthCubit>();
-
-    debugPrint("Token: ${getToken()}");
 
     return BlocListener<AuthCubit, AuthState>(
       bloc: authCubit,
