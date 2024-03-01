@@ -13,7 +13,7 @@ class HomeLayout extends StatelessWidget {
 
   String? storedToken;
 
-  void checkLogging() async {
+  checkLogging() async {
     storedToken = await getIt<LocalTokenManager>().getToken();
   }
 
@@ -35,9 +35,11 @@ class HomeLayout extends StatelessWidget {
         return false;
       },
       builder: (context, state) {
-        return Scaffold(
-          body: state.viewTab,
-          bottomNavigationBar: buildBottomNavBar(context, state),
+        return SafeArea(
+          child: Scaffold(
+            body: state.viewTab,
+            bottomNavigationBar: buildBottomNavBar(context, state),
+          ),
         );
       },
       listener: (BuildContext context, HomeLayoutState state) {},
