@@ -11,6 +11,7 @@ import '../../../data/models/home/categories_response/categories_response.dart';
 import '../../../data/models/home/products_response/products_response.dart';
 import '../../../data/models/requests/login_request.dart';
 import '../../../data/models/requests/register_request.dart';
+import '../../../data/models/wish_list_response/action_on_wish_list_response.dart';
 import '../../../data/models/wish_list_response/wish_list_response.dart';
 import '../../../domain/repository/home/products_repository.dart';
 import '../../config/constants.dart';
@@ -32,10 +33,12 @@ class ApiManager {
     debugPrint("== ${userCredentials.confirmPassword} ==");
     debugPrint("===================================================");
 
+    Map<String, String> headers = {"Content-Type": "application/json"};
+
     Uri url = Uri.https(Constants.baseUrl, EndPoints.register);
     http.Response response = await http.post(
       url,
-      headers: Constants.headers,
+      headers: headers,
       body: jsonEncode(userCredentials.toJson()),
     );
 
@@ -71,10 +74,12 @@ class ApiManager {
     debugPrint("== ${userCredentials.password} ==");
     debugPrint("===================================================");
 
+    Map<String, String> headers = {"Content-Type": "application/json"};
+
     Uri url = Uri.https(Constants.baseUrl, EndPoints.login);
     http.Response response = await http.post(
       url,
-      headers: Constants.headers,
+      headers: headers,
       body: jsonEncode(userCredentials.toJson()),
     );
 
@@ -196,6 +201,100 @@ class ApiManager {
       debugPrint("===================================================");
 
       return Right(wishListResponse);
+    } else {
+      ServerFailure serverFailure = ServerFailure.fromJson(
+          response.statusCode, jsonDecode(response.body));
+
+      debugPrint("==================== Response ====================");
+      debugPrint("== ${serverFailure.statusCode} ==");
+      debugPrint("== ${serverFailure.statusMsg} ==");
+      debugPrint("== ${serverFailure.message} ==");
+      debugPrint("===================================================");
+
+      return Left(serverFailure);
+    }
+  }
+
+  Future<Either<ServerFailure, ActionOnWishListResponse>>
+      removeProductFromWishList(String productId) async {
+    String? token = await getIt<LocalTokenManager>().getToken();
+
+    debugPrint("==================== Request Header ====================");
+    debugPrint("== Token ==");
+    debugPrint("== $token ==");
+    debugPrint("===================================================");
+    debugPrint("==================== Params ====================");
+    debugPrint("== Product ==");
+    debugPrint("== $productId ==");
+    debugPrint("===================================================");
+
+    String endPoint = "${EndPoints.wishList}/$productId";
+
+    Uri url = Uri.https(Constants.baseUrl, endPoint);
+    http.Response response =
+        await http.delete(url, headers: {'token': token ?? ""});
+
+    if (response.statusCode == 200) {
+      ActionOnWishListResponse removeFromWishList =
+          ActionOnWishListResponse.fromJson(jsonDecode(response.body));
+
+      debugPrint("==================== Response ====================");
+      debugPrint("== ${removeFromWishList.status} ==");
+      debugPrint("== ${removeFromWishList.message} ==");
+      debugPrint("== ${removeFromWishList.data} ==");
+      debugPrint("===================================================");
+
+      return Right(removeFromWishList);
+    } else {
+      ServerFailure serverFailure = ServerFailure.fromJson(
+          response.statusCode, jsonDecode(response.body));
+
+      debugPrint("==================== Response ====================");
+      debugPrint("== ${serverFailure.statusCode} ==");
+      debugPrint("== ${serverFailure.statusMsg} ==");
+      debugPrint("== ${serverFailure.message} ==");
+      debugPrint("===================================================");
+
+      return Left(serverFailure);
+    }
+  }
+
+  Future<Either<ServerFailure, ActionOnWishListResponse>> addProductToWishList(
+      String productId) async {
+    String? token = await getIt<LocalTokenManager>().getToken();
+
+    debugPrint("==================== Request Header ====================");
+    debugPrint("== Token ==");
+    debugPrint("== $token ==");
+    debugPrint("===================================================");
+    debugPrint("==================== Request Body ====================");
+    debugPrint("== productId ==");
+    debugPrint("== $productId ==");
+    debugPrint("===================================================");
+
+    Map<String, String>? headers = {
+      'Content-Type': 'application/json',
+      'token': token ?? ""
+    };
+
+    Uri url = Uri.https(Constants.baseUrl, EndPoints.wishList);
+    http.Response response = await http.post(
+      url,
+      headers: headers,
+      body: jsonEncode({'productId': productId}),
+    );
+
+    if (response.statusCode == 200) {
+      ActionOnWishListResponse removeFromWishList =
+          ActionOnWishListResponse.fromJson(jsonDecode(response.body));
+
+      debugPrint("==================== Response ====================");
+      debugPrint("== ${removeFromWishList.status} ==");
+      debugPrint("== ${removeFromWishList.message} ==");
+      debugPrint("== ${removeFromWishList.data} ==");
+      debugPrint("===================================================");
+
+      return Right(removeFromWishList);
     } else {
       ServerFailure serverFailure = ServerFailure.fromJson(
           response.statusCode, jsonDecode(response.body));
