@@ -18,32 +18,32 @@ class HomeProductsListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              "Most Selling",
-              style: context.theme.textTheme.titleSmall!.copyWith(
-                color: context.theme.colorScheme.primary,
+    return BlocProvider(
+      create: (context) => getIt<WishListCubit>()..checkLogging(),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                "Most Selling",
+                style: context.theme.textTheme.titleSmall!.copyWith(
+                  color: context.theme.colorScheme.primary,
+                ),
               ),
-            ),
-            GestureDetector(
-              onTap: () {
-                // TODO: Navigate to all categories screen
-              },
-              child: Text(
-                "View all",
-                style: context.theme.textTheme.bodySmall,
+              GestureDetector(
+                onTap: () {
+                  // TODO: Navigate to all categories screen
+                },
+                child: Text(
+                  "View all",
+                  style: context.theme.textTheme.bodySmall,
+                ),
               ),
-            ),
-          ],
-        ).setHorizontalPadding(context, 16.w),
-        Expanded(
-          child: BlocProvider(
-            create: (context) => getIt<WishListCubit>()..checkLogging(),
+            ],
+          ).setHorizontalPadding(context, 16.w),
+          Expanded(
             child: ListView.builder(
               padding: EdgeInsets.only(
                   top: 16.h, left: 16.w, right: 16.w, bottom: 24),
@@ -54,8 +54,8 @@ class HomeProductsListWidget extends StatelessWidget {
                   CustomProductWidget(product: products![index]),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
