@@ -40,18 +40,21 @@ import '../../domain/repository/home/brands_repository.dart' as _i6;
 import '../../domain/repository/home/categories_repository.dart' as _i11;
 import '../../domain/repository/home/products_repository.dart' as _i23;
 import '../../domain/repository/wish_list/wish_list_repository.dart' as _i33;
+import '../../domain/use_case/add_product_to_wish_list_use_case.dart' as _i36;
 import '../../domain/use_case/brands_use_case.dart' as _i8;
 import '../../domain/use_case/categories_use_case.dart' as _i13;
 import '../../domain/use_case/login_use_case.dart' as _i20;
 import '../../domain/use_case/products_use_case.dart' as _i25;
 import '../../domain/use_case/register_use_case.dart' as _i30;
+import '../../domain/use_case/remove_product_from_wish_list_use_case.dart'
+    as _i39;
 import '../../domain/use_case/wish_list_use_case.dart' as _i35;
-import '../../features/auth/manager/auth_cubit.dart' as _i36;
+import '../../features/auth/manager/auth_cubit.dart' as _i37;
 import '../../features/home_layout/manager/home_layout_cubit.dart' as _i14;
 import '../../features/home_layout/pages/views/home_view/manager/home_cubit.dart'
-    as _i37;
-import '../../features/home_layout/pages/views/wish_list_view/manager/wish_list_cubit.dart'
     as _i38;
+import '../../features/home_layout/pages/views/wish_list_view/manager/wish_list_cubit.dart'
+    as _i40;
 import '../data_services/local_storage/local_token_manager.dart' as _i15;
 import '../data_services/web_services/api_manager.dart' as _i3;
 
@@ -107,18 +110,24 @@ extension GetItInjectableX on _i1.GetIt {
         () => _i34.WishListRepositoryImp(gh<_i31.WishListDataSource>()));
     gh.factory<_i35.WishListUseCase>(
         () => _i35.WishListUseCase(gh<_i33.WishListRepository>()));
-    gh.factory<_i36.AuthCubit>(() => _i36.AuthCubit(
+    gh.factory<_i36.AddProductToWishListUseCase>(
+        () => _i36.AddProductToWishListUseCase(gh<_i33.WishListRepository>()));
+    gh.factory<_i37.AuthCubit>(() => _i37.AuthCubit(
           gh<_i30.RegisterUseCase>(),
           gh<_i20.LoginUseCase>(),
         ));
-    gh.factory<_i37.HomeCubit>(() => _i37.HomeCubit(
+    gh.factory<_i38.HomeCubit>(() => _i38.HomeCubit(
           gh<_i13.CategoriesUseCase>(),
           gh<_i8.BrandsUseCase>(),
           gh<_i25.ProductsUseCase>(),
         ));
-    gh.factory<_i38.WishListCubit>(() => _i38.WishListCubit(
+    gh.factory<_i39.RemoveProductFromWishListUseCase>(() =>
+        _i39.RemoveProductFromWishListUseCase(gh<_i33.WishListRepository>()));
+    gh.factory<_i40.WishListCubit>(() => _i40.WishListCubit(
           gh<_i15.LocalTokenManager>(),
           gh<_i35.WishListUseCase>(),
+          gh<_i39.RemoveProductFromWishListUseCase>(),
+          gh<_i36.AddProductToWishListUseCase>(),
         ));
     return this;
   }

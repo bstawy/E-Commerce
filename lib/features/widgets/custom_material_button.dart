@@ -34,7 +34,7 @@ class CustomMaterialButton extends StatelessWidget {
         onClicked();
       },
       height: height ?? 64.h,
-      minWidth: double.infinity,
+      minWidth: minWidth ?? double.infinity,
       elevation: 0,
       padding: EdgeInsets.all(padding ?? 16.h),
       color: backgroundColor,

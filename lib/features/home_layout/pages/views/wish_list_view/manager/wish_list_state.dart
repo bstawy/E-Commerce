@@ -15,6 +15,8 @@ class SuccessState extends WishListState {
   SuccessState(this.wishList);
 }
 
+class EmptyState extends WishListState {}
+
 class FailureState extends WishListState {
   final ServerFailure serverFailure;
 

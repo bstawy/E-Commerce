@@ -8,12 +8,16 @@ import 'core/config/application_theme.dart';
 import 'core/config/page_route_names.dart';
 import 'core/di/di.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Fix text hides in release mode
   await ScreenUtil.ensureScreenSize();
 
+  // Setup getIt package for DI
   configureDependencies();
+
+  // Run app
   runApp(const MyApp());
 }
 
