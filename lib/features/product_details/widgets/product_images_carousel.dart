@@ -28,15 +28,18 @@ class _ProductImagesCarouselState extends State<ProductImagesCarousel> {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(16.r),
-      child: Stack(
-        fit: StackFit.loose,
-        children: [
-          buildImagesCarousel(widget.product),
-          buildFavoriteButtonWidget(widget.wishListCubit, widget.product),
-          buildDotsIndicator(widget.product, context),
-        ],
+    return Hero(
+      tag: widget.product.id!,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16.r),
+        child: Stack(
+          fit: StackFit.loose,
+          children: [
+            buildImagesCarousel(widget.product),
+            buildFavoriteButtonWidget(widget.wishListCubit, widget.product),
+            buildDotsIndicator(widget.product, context),
+          ],
+        ),
       ),
     );
   }
