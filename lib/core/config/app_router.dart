@@ -6,6 +6,7 @@ import '../../features/auth/pages/login/login_screen.dart';
 import '../../features/auth/pages/register/register_screen.dart';
 import '../../features/home_layout/manager/home_layout_cubit.dart';
 import '../../features/home_layout/pages/home_layout.dart';
+import '../../features/product_details/product_details_screen.dart';
 import '../di/di.dart';
 import 'page_route_names.dart';
 
@@ -37,6 +38,12 @@ class AppRouter {
             create: (context) => getIt<AuthCubit>(),
             child: const RegisterScreen(),
           ),
+          settings: settings,
+        );
+
+      case PageRouteNames.detailsScreen:
+        return MaterialPageRoute(
+          builder: (context) => const ProductDetailsScreen(),
           settings: settings,
         );
 
