@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../core/config/page_route_names.dart';
 import '../../core/extensions/extensions.dart';
 import '../../core/services/snackbar_service.dart';
 import '../../domain/entities/home/product_entity.dart';
@@ -118,66 +119,70 @@ class CustomProductWidget extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.only(
           topLeft: Radius.circular(16.r), topRight: Radius.circular(16.r)),
-      child: Stack(
-        fit: StackFit.loose,
-        children: [
-          CachedNetworkImage(
-            imageUrl: product.imageCover ?? "",
-            imageBuilder: (context, imageProvider) {
-              return Container(
-                width: 190.w,
-                height: 200.h,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: imageProvider,
-                    fit: BoxFit.cover,
+      child: GestureDetector(
+        onTap: () =>
+            context.pushNamed(PageRouteNames.detailsScreen, arguments: product),
+        child: Stack(
+          fit: StackFit.loose,
+          children: [
+            CachedNetworkImage(
+              imageUrl: product.imageCover ?? "",
+              imageBuilder: (context, imageProvider) {
+                return Container(
+                  width: 190.w,
+                  height: 200.h,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: imageProvider,
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                ),
-              );
-            },
-            placeholder: (context, url) => Image.asset(
-              "assets/images/launcher_icon.png",
-              width: 190.w,
-              height: 200.h,
-              fit: BoxFit.cover,
-            ),
-          ),
-          Positioned(
-            right: 0,
-            child: BlocConsumer<WishListCubit, WishListState>(
-              bloc: wishListCubit,
-              listener: (context, state) {},
-              builder: (context, state) {
-                if (state is SuccessState) {
-                  if (wishListCubit.wishListProductIds.contains(product.id)) {
-                    product.isFavorite = true;
-                    return buildFavoriteButton(
-                      context,
-                      () {
-                        wishListCubit.removeProductFromWishList(product.id!);
-                      },
-                    );
-                  } else {
-                    product.isFavorite = false;
-                    return buildFavoriteButton(
-                      context,
-                          () {
-                        wishListCubit.addProductToWishList(product.id!);
-                      },
-                    );
-                  }
-                }
-                return buildFavoriteButton(
-                  context,
-                  () {
-                    SnackBarService.showErrorMessage(
-                        context, "You are not logged in");
-                  },
                 );
               },
+              placeholder: (context, url) => Image.asset(
+                "assets/images/launcher_icon.png",
+                width: 190.w,
+                height: 200.h,
+                fit: BoxFit.cover,
+              ),
             ),
-          ),
-        ],
+            Positioned(
+              right: 0,
+              child: BlocConsumer<WishListCubit, WishListState>(
+                bloc: wishListCubit,
+                listener: (context, state) {},
+                builder: (context, state) {
+                  if (state is SuccessState) {
+                    if (wishListCubit.wishListProductIds.contains(product.id)) {
+                      product.isFavorite = true;
+                      return buildFavoriteButton(
+                        context,
+                        () {
+                          wishListCubit.removeProductFromWishList(product.id!);
+                        },
+                      );
+                    } else {
+                      product.isFavorite = false;
+                      return buildFavoriteButton(
+                        context,
+                        () {
+                          wishListCubit.addProductToWishList(product.id!);
+                        },
+                      );
+                    }
+                  }
+                  return buildFavoriteButton(
+                    context,
+                    () {
+                      SnackBarService.showErrorMessage(
+                          context, "You are not logged in");
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
