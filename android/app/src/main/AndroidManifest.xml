@@ -3,7 +3,9 @@
     <application
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon"
-        android:label="E-Commerce">
+        android:label="E-Commerce"
+        android:enableOnBackInvokedCallback="true"
+        >
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
