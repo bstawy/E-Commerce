@@ -1,6 +1,8 @@
+import 'package:e_commerce/core/services/shimmer_skeleton_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../../../core/extensions/extensions.dart';
 import '../../../../../widgets/custom_header_and_search.dart';
@@ -26,8 +28,7 @@ class WishListView extends StatelessWidget {
             return const LoginRequiredWidget(
                 message: "Please login to see your WishList");
           case LoadingState():
-            return const SafeArea(
-                child: Center(child: CircularProgressIndicator()));
+            return buildLoadingShimmerWidget(context);
           case SuccessState():
             if (state.wishList.isEmpty) {
               return buildEmptyWidget(context);
@@ -73,6 +74,33 @@ class WishListView extends StatelessWidget {
             },
           ).setHorizontalPadding(context, 16.w),
         ),
+      ],
+    );
+  }
+
+  Widget buildLoadingShimmerWidget(BuildContext context) {
+    return Column(
+      children: [
+        const CustomHeaderAndSearch(),
+        SingleChildScrollView(
+          child: Shimmer.fromColors(
+            baseColor: Colors.black,
+            highlightColor: Colors.grey[100]!,
+            child: SizedBox(
+              height: MediaQuery.sizeOf(context).height * 0.77,
+              child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                itemCount: 5,
+                itemBuilder: (context, index) {
+                  return Skeleton(
+                    width: double.infinity,
+                    height: 113.h,
+                  ).setVerticalPadding(context, 16.h);
+                },
+              ),
+            ).setHorizontalPadding(context, 16.w),
+          ),
+        )
       ],
     );
   }

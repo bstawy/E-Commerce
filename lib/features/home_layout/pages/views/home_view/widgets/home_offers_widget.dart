@@ -18,7 +18,7 @@ class _HomeOffersWidgetState extends State<HomeOffersWidget> {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: 200,
+      height: 200.h,
       child: Stack(
         children: [
           PageView(
@@ -82,40 +82,3 @@ class _HomeOffersWidgetState extends State<HomeOffersWidget> {
     );
   }
 }
-
-//Container(
-//           width: 10,
-//           height: 10,
-//           margin: const EdgeInsets.all(10.0),
-//           decoration: BoxDecoration(
-//             //color: context.theme.colorScheme.primary,
-//             color: _currentPageIndex == 0
-//                 ? context.theme.colorScheme.primary
-//                 : context.theme.colorScheme.background,
-//             borderRadius: BorderRadius.circular(5),
-//           ),
-//         ),
-//         Container(
-//           width: 10,
-//           height: 10,
-//           margin: const EdgeInsets.all(10.0),
-//           decoration: BoxDecoration(
-//             //color: context.theme.colorScheme.background,
-//             color: _currentPageIndex == 1
-//                 ? context.theme.colorScheme.primary
-//                 : context.theme.colorScheme.background,
-//             borderRadius: BorderRadius.circular(5),
-//           ),
-//         ),
-//         Container(
-//           width: 10,
-//           height: 10,
-//           margin: const EdgeInsets.all(10.0),
-//           decoration: BoxDecoration(
-//             //color: context.theme.colorScheme.primary,
-//             color: _currentPageIndex == 2
-//                 ? context.theme.colorScheme.primary
-//                 : context.theme.colorScheme.background,
-//             borderRadius: BorderRadius.circular(5),
-//           ),
-//         ),

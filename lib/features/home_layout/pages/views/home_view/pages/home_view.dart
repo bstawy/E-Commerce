@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../../../core/extensions/extensions.dart';
+import '../../../../../../core/services/shimmer_circular_skeleton_service.dart';
+import '../../../../../../core/services/shimmer_skeleton_service.dart';
 import '../../../../../../domain/entities/home/brand_entity.dart';
 import '../../../../../../domain/entities/home/category_entity.dart';
 import '../../../../../../domain/entities/home/product_entity.dart';
@@ -40,13 +43,7 @@ class HomeView extends StatelessWidget {
             state.products ?? [],
           );
         }
-        return Column(
-          children: [
-            const CustomHeaderAndSearch(),
-            SizedBox(height: 350.h),
-            const CircularProgressIndicator(),
-          ],
-        );
+        return buildLoadingShimmerWidget(context);
       },
       listener: (context, state) {
         if (state is LoadingState) {
@@ -106,6 +103,74 @@ class HomeView extends StatelessWidget {
             ],
           ),
         ),
+      ],
+    );
+  }
+
+  Widget buildLoadingShimmerWidget(BuildContext context) {
+    return Column(
+      children: [
+        const CustomHeaderAndSearch(),
+        Shimmer.fromColors(
+          baseColor: Colors.black,
+          highlightColor: Colors.grey[100]!,
+          child: Column(
+            children: [
+              Skeleton(
+                width: double.infinity,
+                height: 200.h,
+              ),
+              SizedBox(height: 24.h),
+              Skeleton(
+                width: double.infinity,
+                height: 30.h,
+              ),
+              SizedBox(height: 16.h),
+              SizedBox(
+                height: 100.h,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 4,
+                  itemBuilder: (context, index) {
+                    return CircularSkeleton(size: 100.r)
+                        .setHorizontalPadding(context, 8.w);
+                  },
+                ),
+              ),
+              SizedBox(height: 16.h),
+              SizedBox(
+                height: 100.h,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 4,
+                  itemBuilder: (context, index) {
+                    return CircularSkeleton(size: 100.r)
+                        .setHorizontalPadding(context, 8.w);
+                  },
+                ),
+              ),
+              SizedBox(height: 24.h),
+              Skeleton(
+                width: double.infinity,
+                height: 30.h,
+              ),
+              SizedBox(height: 16.h),
+              SizedBox(
+                height: 100.h,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 4,
+                  itemBuilder: (context, index) {
+                    return Skeleton(
+                      width: 190.h,
+                      height: 150.w,
+                    ).setHorizontalPadding(context, 8.w);
+                  },
+                ),
+              ),
+            ],
+          ).setHorizontalPadding(context, 16.w),
+        )
       ],
     );
   }
