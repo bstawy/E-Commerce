@@ -27,7 +27,8 @@ dependencies:
   dartz: ^0.10.1
   flutter_secure_storage: ^4.2.1
   flutter_offline: ^2.1.0
-
+  shimmer: ^3.0.0
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
