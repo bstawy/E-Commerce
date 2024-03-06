@@ -1,7 +1,11 @@
+import 'package:dartz/dartz.dart';
+import '../../../core/error/server_failure.dart';
+
 import '../../entities/home/product_entity.dart';
 
 abstract class ProductsRepository {
-  Future<List<Product>?> getProducts({ProductsSort? sortBy});
+  Future<Either<ServerFailure, List<Product>?>> getProducts(
+      {ProductsSort? sortBy});
 }
 
 enum ProductsSort {

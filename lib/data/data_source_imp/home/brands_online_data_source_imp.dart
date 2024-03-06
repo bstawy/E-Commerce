@@ -1,3 +1,5 @@
+import 'package:dartz/dartz.dart';
+import 'package:e_commerce/core/error/server_failure.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../core/data_services/web_services/api_manager.dart';
@@ -12,9 +14,13 @@ class OnlineBrandsDataSourceImp extends BrandsDataSource {
   OnlineBrandsDataSourceImp(this.apiManager);
 
   @override
-  Future<List<Brand>?> getBrands() async {
+  Future<Either<ServerFailure, List<Brand>?>> getBrands() async {
     var response = await apiManager.getBrands();
 
-    return response.data?.map((brandDto) => brandDto.toBrand()).toList();
+    return response.fold((l) {
+      return Left(l);
+    }, (r) {
+      return Right(r.data?.map((brandDto) => brandDto.toBrand()).toList());
+    });
   }
 }

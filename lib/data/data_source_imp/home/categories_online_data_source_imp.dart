@@ -1,3 +1,5 @@
+import 'package:dartz/dartz.dart';
+import '../../../core/error/server_failure.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../core/data_services/web_services/api_manager.dart';
@@ -12,11 +14,14 @@ class CategoriesOnlineDataSourceImp extends CategoriesDataSource {
   CategoriesOnlineDataSourceImp(this.apiManager);
 
   @override
-  Future<List<Category>?> getCategories() async {
+  Future<Either<ServerFailure, List<Category>?>> getCategories() async {
     var response = await apiManager.getCategories();
 
-    return response.data
-        ?.map((categoryDto) => categoryDto.toCategory())
-        .toList();
+    return response.fold((l) {
+      return Left(l);
+    }, (r) {
+      return Right(
+          r.data?.map((categoryDto) => categoryDto.toCategory()).toList());
+    });
   }
 }

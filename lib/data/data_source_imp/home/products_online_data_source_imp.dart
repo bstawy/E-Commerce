@@ -1,3 +1,5 @@
+import 'package:dartz/dartz.dart';
+import '../../../core/error/server_failure.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../core/data_services/web_services/api_manager.dart';
@@ -13,8 +15,15 @@ class ProductsOnlineDataSource extends ProductsDataSource {
   ProductsOnlineDataSource(this.apiManager);
 
   @override
-  Future<List<Product>> getProducts({ProductsSort? sortBy}) async {
+  Future<Either<ServerFailure, List<Product>?>> getProducts(
+      {ProductsSort? sortBy}) async {
     var response = await apiManager.getProducts(sortBy: sortBy);
-    return response.data!.map((productDto) => productDto.toProduct()).toList();
+
+    return response.fold((l) {
+      return Left(l);
+    }, (r) {
+      return Right(
+          r.data?.map((productDto) => productDto.toProduct()).toList());
+    });
   }
 }

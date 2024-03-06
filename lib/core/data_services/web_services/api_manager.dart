@@ -110,7 +110,7 @@ class ApiManager {
 
   // ===================== Data =====================
 
-  Future<CategoriesResponse> getCategories() async {
+  Future<Either<ServerFailure, CategoriesResponse>> getCategories() async {
     Uri url = Uri.https(Constants.baseUrl, EndPoints.allCategories);
     http.Response response = await http.get(url);
 
@@ -119,18 +119,62 @@ class ApiManager {
         "== URL Request: ${Constants.baseUrl}${EndPoints.allCategories} ==");
     debugPrint("===================================================");
 
-    CategoriesResponse allCategories =
-        CategoriesResponse.fromJson(jsonDecode(response.body));
+    if (response.statusCode == 200) {
+      CategoriesResponse subCategories =
+          CategoriesResponse.fromJson(jsonDecode(response.body));
 
-    debugPrint("==================== Api Response ====================");
-    debugPrint("== ${allCategories.results ?? "null"} ==");
-    debugPrint("===================================================");
-    debugPrint("${allCategories.results}");
+      debugPrint("==================== Api Response ====================");
+      debugPrint("== ${subCategories.results ?? "null"} ==");
+      debugPrint("===================================================");
+      return Right(subCategories);
+    } else {
+      ServerFailure serverFailure = ServerFailure.fromJson(
+          response.statusCode, jsonDecode(response.body));
 
-    return allCategories;
+      debugPrint("==================== Response ====================");
+      debugPrint("== ${serverFailure.statusCode} ==");
+      debugPrint("== ${serverFailure.statusMsg} ==");
+      debugPrint("== ${serverFailure.message} ==");
+      debugPrint("===================================================");
+
+      return Left(serverFailure);
+    }
   }
 
-  Future<BrandsResponse> getBrands() async {
+  Future<Either<ServerFailure, CategoriesResponse>>
+      getSubCategoriesOnCategoryId(String categoryId) async {
+    Uri url = Uri.https(
+        Constants.baseUrl, "/$categoryId${EndPoints.subCategoriesOnCategory}");
+    http.Response response = await http.get(url);
+
+    debugPrint("==================== Api Call ====================");
+    debugPrint(
+        "== URL Request: ${Constants.baseUrl}$categoryId/${EndPoints.allCategories} ==");
+    debugPrint("===================================================");
+
+    if (response.statusCode == 200) {
+      CategoriesResponse subCategories =
+          CategoriesResponse.fromJson(jsonDecode(response.body));
+
+      debugPrint("==================== Api Response ====================");
+      debugPrint("== ${subCategories.results ?? "null"} ==");
+      debugPrint("===================================================");
+      return Right(subCategories);
+    } else {
+      ServerFailure serverFailure = ServerFailure.fromJson(
+          response.statusCode, jsonDecode(response.body));
+
+      debugPrint("==================== Response ====================");
+      debugPrint("== ${serverFailure.statusCode} ==");
+      debugPrint("== ${serverFailure.statusMsg} ==");
+      debugPrint("== ${serverFailure.message} ==");
+      debugPrint("===================================================");
+
+      return Left(serverFailure);
+    }
+  }
+
+  Future<Either<ServerFailure, BrandsResponse>> getBrands() async {
     Uri url = Uri.https(Constants.baseUrl, EndPoints.allBrands);
     http.Response response = await http.get(url);
 
@@ -138,18 +182,30 @@ class ApiManager {
     debugPrint("== URL Request: ${Constants.baseUrl}${EndPoints.allBrands} ==");
     debugPrint("===================================================");
 
-    BrandsResponse allBrands =
-        BrandsResponse.fromJson(jsonDecode(response.body));
+    if (response.statusCode == 200) {
+      BrandsResponse allBrands =
+          BrandsResponse.fromJson(jsonDecode(response.body));
 
-    debugPrint("==================== Api Response ====================");
-    debugPrint("== ${allBrands.results ?? "null"} ==");
-    debugPrint("===================================================");
-    debugPrint("${allBrands.results}");
+      debugPrint("==================== Api Response ====================");
+      debugPrint("== ${allBrands.results ?? "null"} ==");
+      debugPrint("===================================================");
+      return Right(allBrands);
+    } else {
+      ServerFailure serverFailure = ServerFailure.fromJson(
+          response.statusCode, jsonDecode(response.body));
 
-    return allBrands;
+      debugPrint("==================== Response ====================");
+      debugPrint("== ${serverFailure.statusCode} ==");
+      debugPrint("== ${serverFailure.statusMsg} ==");
+      debugPrint("== ${serverFailure.message} ==");
+      debugPrint("===================================================");
+
+      return Left(serverFailure);
+    }
   }
 
-  Future<ProductsResponse> getProducts({ProductsSort? sortBy}) async {
+  Future<Either<ServerFailure, ProductsResponse>> getProducts(
+      {ProductsSort? sortBy}) async {
     Map<String, dynamic>? params = {};
     http.Response response;
 
@@ -167,15 +223,26 @@ class ApiManager {
         "== URL Request: ${Constants.baseUrl}${EndPoints.allProducts} ==");
     debugPrint("===================================================");
 
-    ProductsResponse allProducts =
-        ProductsResponse.fromJson(jsonDecode(response.body));
+    if (response.statusCode == 200) {
+      ProductsResponse allProducts =
+          ProductsResponse.fromJson(jsonDecode(response.body));
 
-    debugPrint("==================== Api Response ====================");
-    debugPrint("== ${allProducts.results ?? "null"} ==");
-    debugPrint("===================================================");
-    debugPrint("${allProducts.results}");
+      debugPrint("==================== Api Response ====================");
+      debugPrint("== ${allProducts.results ?? "null"} ==");
+      debugPrint("===================================================");
+      return Right(allProducts);
+    } else {
+      ServerFailure serverFailure = ServerFailure.fromJson(
+          response.statusCode, jsonDecode(response.body));
 
-    return allProducts;
+      debugPrint("==================== Response ====================");
+      debugPrint("== ${serverFailure.statusCode} ==");
+      debugPrint("== ${serverFailure.statusMsg} ==");
+      debugPrint("== ${serverFailure.message} ==");
+      debugPrint("===================================================");
+
+      return Left(serverFailure);
+    }
   }
 
   Future<Either<ServerFailure, WishListResponse>> getWishList() async {
