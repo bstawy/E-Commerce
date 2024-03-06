@@ -5,16 +5,10 @@ abstract class HomeStates {}
 
 class LoadingState extends HomeStates {}
 
-class SuccessState extends HomeStates {
-  final List<Category>? categories;
-  final List<Brand>? brands;
-  final List<Product>? products;
-
-  SuccessState({this.categories, this.brands, this.products});
-}
+class SuccessState extends HomeStates {}
 
 class FailureState extends HomeStates {
-  final String? message;
+  final ServerFailure serverFailure;
 
-  FailureState(this.message);
+  FailureState(this.serverFailure);
 }

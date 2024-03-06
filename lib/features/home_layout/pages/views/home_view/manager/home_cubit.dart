@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import "package:flutter_bloc/flutter_bloc.dart";
 import 'package:injectable/injectable.dart';
 
+import '../../../../../../core/error/server_failure.dart';
 import '../../../../../../domain/entities/home/brand_entity.dart';
 import '../../../../../../domain/entities/home/category_entity.dart';
 import '../../../../../../domain/entities/home/product_entity.dart';
@@ -13,31 +14,63 @@ part 'home_state.dart';
 
 @injectable
 class HomeCubit extends Cubit<HomeStates> {
-  CategoriesUseCase getCategoriesUseCase;
-  BrandsUseCase getBrandsUseCase;
-  ProductsUseCase getMostSellingProducts;
+  final CategoriesUseCase _getCategoriesUseCase;
+  final BrandsUseCase _getBrandsUseCase;
+  final ProductsUseCase _getMostSellingProducts;
+
+  List<Category>? categories;
+  List<Brand>? brands;
+  List<Product>? products;
 
   @factoryMethod
   HomeCubit(
-    this.getCategoriesUseCase,
-    this.getBrandsUseCase,
-    this.getMostSellingProducts,
+    this._getCategoriesUseCase,
+    this._getBrandsUseCase,
+    this._getMostSellingProducts,
   ) : super(LoadingState());
 
-  void getCategories() async {
-    emit(LoadingState());
-    try {
-      var categories = await getCategoriesUseCase.execute();
-      var brands = await getBrandsUseCase.execute();
-      var products = await getMostSellingProducts.execute();
+  Future<void> fetchData() async {
+    await Future.wait([
+      getCategories(),
+      getBrands(),
+      getProducts(),
+    ]);
+    emit(SuccessState());
+  }
 
-      emit(SuccessState(
-        categories: categories,
-        brands: brands,
-        products: products,
-      ));
-    } catch (e) {
-      emit(FailureState(e.toString()));
-    }
+  Future<void> getCategories() async {
+    emit(LoadingState());
+
+    var response = await _getCategoriesUseCase.execute();
+
+    response.fold((l) {
+      emit(FailureState(l));
+    }, (r) {
+      categories = r;
+    });
+  }
+
+  Future<void> getBrands() async {
+    emit(LoadingState());
+
+    var response = await _getBrandsUseCase.execute();
+
+    response.fold((l) {
+      emit(FailureState(l));
+    }, (r) {
+      brands = r;
+    });
+  }
+
+  Future<void> getProducts() async {
+    emit(LoadingState());
+
+    var response = await _getMostSellingProducts.execute();
+
+    response.fold((l) {
+      emit(FailureState(l));
+    }, (r) {
+      products = r;
+    });
   }
 }

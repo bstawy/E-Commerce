@@ -23,7 +23,7 @@ class HomeView extends StatelessWidget {
     HomeCubit homeCubit = context.read<HomeCubit>();
 
     return BlocConsumer<HomeCubit, HomeStates>(
-      bloc: homeCubit..getCategories(),
+      bloc: homeCubit..fetchData(),
       buildWhen: (previous, current) {
         if (current is LoadingState) return false;
         if (current is FailureState) return false;
@@ -38,11 +38,12 @@ class HomeView extends StatelessWidget {
         if (state is SuccessState) {
           return buildSuccessWidget(
             context,
-            state.categories ?? [],
-            state.brands ?? [],
-            state.products ?? [],
+            homeCubit.categories ?? [],
+            homeCubit.brands ?? [],
+            homeCubit.products ?? [],
           );
         }
+
         return buildLoadingShimmerWidget(context);
       },
       listener: (context, state) {
