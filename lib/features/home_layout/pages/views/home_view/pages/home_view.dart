@@ -1,3 +1,4 @@
+import '../../../../../../core/services/snackbar_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -43,15 +44,12 @@ class HomeView extends StatelessWidget {
             homeCubit.products ?? [],
           );
         }
-
         return buildLoadingShimmerWidget(context);
       },
       listener: (context, state) {
-        if (state is LoadingState) {
-          // show loading
-        }
         if (state is FailureState) {
-          // show error
+          SnackBarService.showErrorMessage(
+              context, state.serverFailure.message!);
         }
       },
     );
