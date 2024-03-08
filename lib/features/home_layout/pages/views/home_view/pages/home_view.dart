@@ -1,3 +1,4 @@
+import '../../../../../../core/services/snackbar_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,7 +24,7 @@ class HomeView extends StatelessWidget {
     HomeCubit homeCubit = context.read<HomeCubit>();
 
     return BlocConsumer<HomeCubit, HomeStates>(
-      bloc: homeCubit..getCategories(),
+      bloc: homeCubit..fetchData(),
       buildWhen: (previous, current) {
         if (current is LoadingState) return false;
         if (current is FailureState) return false;
@@ -38,19 +39,17 @@ class HomeView extends StatelessWidget {
         if (state is SuccessState) {
           return buildSuccessWidget(
             context,
-            state.categories ?? [],
-            state.brands ?? [],
-            state.products ?? [],
+            homeCubit.categories ?? [],
+            homeCubit.brands ?? [],
+            homeCubit.products ?? [],
           );
         }
         return buildLoadingShimmerWidget(context);
       },
       listener: (context, state) {
-        if (state is LoadingState) {
-          // show loading
-        }
         if (state is FailureState) {
-          // show error
+          SnackBarService.showErrorMessage(
+              context, state.serverFailure.message!);
         }
       },
     );

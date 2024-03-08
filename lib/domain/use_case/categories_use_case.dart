@@ -1,3 +1,5 @@
+import 'package:dartz/dartz.dart';
+import '../../core/error/server_failure.dart';
 import 'package:injectable/injectable.dart';
 
 import '../entities/home/category_entity.dart';
@@ -10,7 +12,7 @@ class CategoriesUseCase {
   @factoryMethod
   CategoriesUseCase(this.repository);
 
-  Future<List<Category>?> execute() {
+  Future<Either<ServerFailure, List<Category>?>> execute() {
     return repository.getCategories();
   }
 }

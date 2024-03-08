@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
       builder: (_, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'E-Commerce',
+          title: 'E-Commerce Development',
           theme: ApplicationTheme.applicationTheme,
           themeMode: ThemeMode.light,
           initialRoute: PageRouteNames.initial,

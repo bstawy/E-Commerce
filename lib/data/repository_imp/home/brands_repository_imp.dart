@@ -1,3 +1,5 @@
+import 'package:dartz/dartz.dart';
+import '../../../core/error/server_failure.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../domain/entities/home/brand_entity.dart';
@@ -12,7 +14,16 @@ class BrandsRepositoryImp extends BrandsRepository {
   BrandsRepositoryImp(this.brandsDataSource);
 
   @override
-  Future<List<Brand>?> getBrands() {
-    return brandsDataSource.getBrands();
+  Future<Either<ServerFailure, List<Brand>?>> getBrands() async {
+    var response = await brandsDataSource.getBrands();
+
+    return response.fold(
+      (l) {
+        return Left(l);
+      },
+      (r) {
+        return Right(r);
+      },
+    );
   }
 }

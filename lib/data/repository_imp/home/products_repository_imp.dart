@@ -1,3 +1,5 @@
+import 'package:dartz/dartz.dart';
+import '../../../core/error/server_failure.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../domain/entities/home/product_entity.dart';
@@ -12,7 +14,17 @@ class ProductsRepositoryImp extends ProductsRepository {
   ProductsRepositoryImp(this.productsDataSource);
 
   @override
-  Future<List<Product>?> getProducts({ProductsSort? sortBy}) {
-    return productsDataSource.getProducts(sortBy: sortBy);
+  Future<Either<ServerFailure, List<Product>?>> getProducts(
+      {ProductsSort? sortBy}) async {
+    var response = await productsDataSource.getProducts(sortBy: sortBy);
+
+    return response.fold(
+      (l) {
+        return Left(l);
+      },
+      (r) {
+        return Right(r);
+      },
+    );
   }
 }

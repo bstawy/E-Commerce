@@ -10,6 +10,7 @@ class ApplicationTheme {
       background: const Color(0xffffffff),
       onBackground: const Color(0xff004182).withOpacity(0.3),
       secondary: const Color(0xff000000).withOpacity(0.7),
+      onSecondary: const Color(0xFFEDF1F5),
     ),
 
     // App bar theme configuration
@@ -56,7 +57,7 @@ class ApplicationTheme {
         fontWeight: FontWeight.w500,
       ),
       bodyLarge: TextStyle(
-        color: Color(0xff06004F),
+        color: Color.fromARGB(255, 5, 5, 5),
         fontSize: 14,
         fontWeight: FontWeight.w500,
       ),

@@ -1,5 +1,8 @@
+import 'package:dartz/dartz.dart';
+import '../../../core/error/server_failure.dart';
+
 import '../../entities/home/brand_entity.dart';
 
 abstract class BrandsRepository {
-  Future<List<Brand>?> getBrands();
+  Future<Either<ServerFailure, List<Brand>?>> getBrands();
 }

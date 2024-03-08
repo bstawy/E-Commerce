@@ -1,3 +1,5 @@
+import 'package:dartz/dartz.dart';
+import '../../core/error/server_failure.dart';
 import 'package:injectable/injectable.dart';
 
 import '../entities/home/brand_entity.dart';
@@ -10,7 +12,7 @@ class BrandsUseCase {
   @factoryMethod
   BrandsUseCase(this.brandsRepository);
 
-  Future<List<Brand>?> execute() {
+  Future<Either<ServerFailure, List<Brand>?>> execute() {
     return brandsRepository.getBrands();
   }
 }
