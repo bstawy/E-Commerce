@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:e_commerce/core/error/server_failure.dart';
+import '../../../core/error/server_failure.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../core/data_services/web_services/api_manager.dart';

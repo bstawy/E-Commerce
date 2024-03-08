@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
-import '../../../core/error/server_failure.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../core/data_services/web_services/api_manager.dart';
+import '../../../core/error/server_failure.dart';
 import '../../../domain/entities/home/category_entity.dart';
 import '../../data_source/home/categories_data_source.dart';
 
