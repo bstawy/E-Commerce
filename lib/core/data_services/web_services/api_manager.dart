@@ -143,13 +143,13 @@ class ApiManager {
 
   Future<Either<ServerFailure, CategoriesResponse>>
       getSubCategoriesOnCategoryId(String categoryId) async {
-    Uri url = Uri.https(
-        Constants.baseUrl, "/$categoryId${EndPoints.subCategoriesOnCategory}");
+    Uri url = Uri.https(Constants.baseUrl,
+        "${EndPoints.allCategories}/$categoryId${EndPoints.subCategoriesOnCategory}");
     http.Response response = await http.get(url);
 
     debugPrint("==================== Api Call ====================");
     debugPrint(
-        "== URL Request: ${Constants.baseUrl}$categoryId/${EndPoints.allCategories} ==");
+        "== URL Request: ${Constants.baseUrl}/$categoryId${EndPoints.subCategoriesOnCategory} ==");
     debugPrint("===================================================");
 
     if (response.statusCode == 200) {
