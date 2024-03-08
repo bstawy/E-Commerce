@@ -41,7 +41,7 @@ class AppRouter {
           settings: settings,
         );
 
-      case PageRouteNames.detailsScreen:
+      case PageRouteNames.productDetailsScreen:
         return MaterialPageRoute(
           builder: (context) => const ProductDetailsScreen(),
           settings: settings,

@@ -122,7 +122,7 @@ class CustomProductWidget extends StatelessWidget {
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(16.r), topRight: Radius.circular(16.r)),
         child: GestureDetector(
-          onTap: () => context.pushNamed(PageRouteNames.detailsScreen,
+          onTap: () => context.pushNamed(PageRouteNames.productDetailsScreen,
               arguments: product),
           child: Stack(
             fit: StackFit.loose,
