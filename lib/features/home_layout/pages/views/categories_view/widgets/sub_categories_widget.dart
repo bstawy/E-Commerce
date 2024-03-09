@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../../../core/config/page_route_names.dart';
 import '../../../../../../core/extensions/extensions.dart';
+import '../../../../../../domain/entities/home/category_entity.dart';
 import '../manager/cubit/categories_cubit.dart';
 
 class SubCategoriesWidget extends StatelessWidget {
@@ -11,8 +13,6 @@ class SubCategoriesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    CategoriesCubit categoriesCubit = context.read<CategoriesCubit>();
-
     return Column(
       children: [
         Container(
@@ -23,8 +23,10 @@ class SubCategoriesWidget extends StatelessWidget {
             image: DecorationImage(
               fit: BoxFit.cover,
               image: CachedNetworkImageProvider(
-                categoriesCubit
-                    .categories![categoriesCubit.selectedCategoryIndex]
+                context
+                    .read<CategoriesCubit>()
+                    .categories![
+                        context.read<CategoriesCubit>().selectedCategoryIndex]
                     .imageUrl!,
               ),
               opacity: 0.8,
@@ -32,8 +34,11 @@ class SubCategoriesWidget extends StatelessWidget {
           ),
           alignment: Alignment.center,
           child: Text(
-            categoriesCubit
-                .categories![categoriesCubit.selectedCategoryIndex].name!,
+            context
+                .read<CategoriesCubit>()
+                .categories![
+                    context.read<CategoriesCubit>().selectedCategoryIndex]
+                .name!,
             style: TextStyle(
               color: context.theme.colorScheme.onPrimary,
               fontSize: 16,
@@ -55,10 +60,10 @@ class SubCategoriesWidget extends StatelessWidget {
                   ((MediaQuery.of(context).size.width - (24.w + 16.w)) / 2) /
                       260.h,
             ),
-            itemCount: categoriesCubit.subCategories!.length,
+            itemCount: context.read<CategoriesCubit>().subCategories!.length,
             itemBuilder: (context, index) => buildGridItem(
               context,
-              categoriesCubit.subCategories![index],
+              context.read<CategoriesCubit>().subCategories![index],
             ),
           ),
         ),
@@ -66,10 +71,12 @@ class SubCategoriesWidget extends StatelessWidget {
     );
   }
 
-  Widget buildGridItem(BuildContext context, dynamic model) {
+  Widget buildGridItem(BuildContext context, Category category) {
     return GestureDetector(
       onTap: () {
-        // TODO: Navigate to selected category screen
+        context.pushNamed(PageRouteNames.categoryProductsScreen,
+            arguments: context.read<CategoriesCubit>().categories![
+                context.read<CategoriesCubit>().selectedCategoryIndex]);
       },
       child: Column(
         children: [
@@ -101,7 +108,7 @@ class SubCategoriesWidget extends StatelessWidget {
           ),
           SizedBox(height: 8.h),
           Text(
-            model.name ?? "",
+            category.name ?? "",
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,

@@ -1,8 +1,9 @@
 import 'package:dartz/dartz.dart';
+import 'package:injectable/injectable.dart';
+
 import '../../core/error/server_failure.dart';
 import '../entities/home/category_entity.dart';
 import '../repository/categories/sub_categories_repository.dart';
-import 'package:injectable/injectable.dart';
 
 @injectable
 class SubCategoriesOnCategoryUseCase {
