@@ -245,6 +245,47 @@ class ApiManager {
     }
   }
 
+  Future<Either<ServerFailure, ProductsResponse>> getCategoryProducts(
+      String categoryId) async {
+    Map<String, dynamic>? params = {};
+    http.Response response;
+
+    if (categoryId != "") {
+      params['category[in]'] = categoryId;
+      Uri url = Uri.https(Constants.baseUrl, EndPoints.allProducts, params);
+      response = await http.get(url);
+    } else {
+      Uri url = Uri.https(Constants.baseUrl, EndPoints.allProducts);
+      response = await http.get(url);
+    }
+
+    debugPrint("==================== Api Call ====================");
+    debugPrint(
+        "== URL Request: ${Constants.baseUrl}${EndPoints.allProducts}?${params['category[in]']} ==");
+    debugPrint("===================================================");
+
+    if (response.statusCode == 200) {
+      ProductsResponse allProducts =
+          ProductsResponse.fromJson(jsonDecode(response.body));
+
+      debugPrint("==================== Api Response ====================");
+      debugPrint("== ${allProducts.results ?? "null"} ==");
+      debugPrint("===================================================");
+      return Right(allProducts);
+    } else {
+      ServerFailure serverFailure = ServerFailure.fromJson(
+          response.statusCode, jsonDecode(response.body));
+
+      debugPrint("==================== Response ====================");
+      debugPrint("== ${serverFailure.statusCode} ==");
+      debugPrint("== ${serverFailure.statusMsg} ==");
+      debugPrint("== ${serverFailure.message} ==");
+      debugPrint("===================================================");
+
+      return Left(serverFailure);
+    }
+  }
+
   Future<Either<ServerFailure, WishListResponse>> getWishList() async {
     String? token = await getIt<LocalTokenManager>().getToken();
 
