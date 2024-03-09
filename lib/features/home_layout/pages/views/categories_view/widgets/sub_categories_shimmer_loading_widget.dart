@@ -18,7 +18,7 @@ class SubCategoriesShimmerLoadingWidget extends StatelessWidget {
         children: [
           Skeleton(
             width: 220.w,
-            height: 100.h,
+            height: 95.h,
           ),
           SizedBox(
             width: 220.w,
