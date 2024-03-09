@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../core/config/page_route_names.dart';
+import '../../core/di/di.dart';
 import '../../core/extensions/extensions.dart';
 import '../../core/services/snackbar_service.dart';
 import '../../domain/entities/home/product_entity.dart';
@@ -20,72 +21,77 @@ class CustomProductWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WishListCubit wishListCubit = context.read<WishListCubit>();
-
-    return Container(
-      width: 190.w,
-      margin: EdgeInsets.only(right: 16.w),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15.r),
-        border: Border.all(
-          color: context.theme.colorScheme.primary.withOpacity(0.3),
-          width: 2,
-        ),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          buildHeader(context, wishListCubit),
-          SizedBox(height: 8.h),
-          Column(
+    return BlocConsumer<WishListCubit, WishListState>(
+      bloc: getIt<WishListCubit>(),
+      listener: (context, state) {},
+      builder: (context, state) {
+        return Container(
+          width: 190.w,
+          margin: EdgeInsets.only(right: 16.w),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15.r),
+            border: Border.all(
+              color: context.theme.colorScheme.primary.withOpacity(0.3),
+              width: 2,
+            ),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                product.title ?? "",
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: context.theme.textTheme.bodyLarge!.copyWith(
-                  color: context.theme.colorScheme.onSecondary,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-              Text(
-                product.description ?? "",
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: context.theme.textTheme.bodyLarge!.copyWith(
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
+              buildHeader(context, context.read<WishListCubit>()),
               SizedBox(height: 8.h),
-              Row(
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "EGP ${product.priceAfterDiscount ?? product.price}",
+                    product.title ?? "",
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: context.theme.textTheme.bodyLarge!.copyWith(
+                      color: context.theme.colorScheme.primary,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  Text(
+                    product.description ?? "",
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: context.theme.textTheme.bodyLarge!.copyWith(
                       fontWeight: FontWeight.w400,
                     ),
                   ),
-                  SizedBox(width: 16.w),
-                  Visibility(
-                    visible: product.priceAfterDiscount != null,
-                    child: Text(
-                      "${product.price} EGP",
-                      style: context.theme.textTheme.bodySmall!.copyWith(
-                        fontWeight: FontWeight.w300,
-                        decoration: TextDecoration.lineThrough,
+                  SizedBox(height: 8.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "EGP ${product.priceAfterDiscount ?? product.price}",
+                        style: context.theme.textTheme.bodyLarge!.copyWith(
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
-                    ),
+                      //SizedBox(width: 16.w),
+                      Visibility(
+                        visible: product.priceAfterDiscount != null,
+                        child: Text(
+                          "${product.price} EGP",
+                          style: context.theme.textTheme.bodySmall!.copyWith(
+                            fontWeight: FontWeight.w300,
+                            decoration: TextDecoration.lineThrough,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
+                  SizedBox(height: 8.h),
+                  buildFooter(context),
                 ],
-              ),
-              SizedBox(height: 8.h),
-              buildFooter(context),
+              ).setHorizontalPadding(context, 8.w),
             ],
-          ).setHorizontalPadding(context, 8.w),
-        ],
-      ),
+          ),
+        );
+      },
     );
   }
 
