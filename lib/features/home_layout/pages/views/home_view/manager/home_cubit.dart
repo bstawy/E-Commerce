@@ -6,17 +6,17 @@ import '../../../../../../core/error/server_failure.dart';
 import '../../../../../../domain/entities/home/brand_entity.dart';
 import '../../../../../../domain/entities/home/category_entity.dart';
 import '../../../../../../domain/entities/home/product_entity.dart';
-import '../../../../../../domain/use_case/brands_use_case.dart';
-import '../../../../../../domain/use_case/categories_use_case.dart';
-import '../../../../../../domain/use_case/products_use_case.dart';
+import '../../../../../../domain/use_case/get_brands_use_case.dart';
+import '../../../../../../domain/use_case/get_categories_use_case.dart';
+import '../../../../../../domain/use_case/get_most_selling_products_use_case.dart';
 
 part 'home_state.dart';
 
 @injectable
 class HomeCubit extends Cubit<HomeStates> {
-  final CategoriesUseCase _getCategoriesUseCase;
-  final BrandsUseCase _getBrandsUseCase;
-  final ProductsUseCase _getMostSellingProducts;
+  final GetCategoriesUseCase _getCategoriesUseCase;
+  final GetBrandsUseCase _getBrandsUseCase;
+  final GetMostSellingProductsUseCase _getMostSellingProducts;
 
   List<Category>? categories;
   List<Brand>? brands;

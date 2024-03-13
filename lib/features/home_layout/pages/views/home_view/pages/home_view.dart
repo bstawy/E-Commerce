@@ -1,4 +1,3 @@
-import '../../../../../../core/services/snackbar_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,6 +6,7 @@ import 'package:shimmer/shimmer.dart';
 import '../../../../../../core/extensions/extensions.dart';
 import '../../../../../../core/services/shimmer_circular_skeleton_service.dart';
 import '../../../../../../core/services/shimmer_skeleton_service.dart';
+import '../../../../../../core/services/snackbar_service.dart';
 import '../../../../../../domain/entities/home/brand_entity.dart';
 import '../../../../../../domain/entities/home/category_entity.dart';
 import '../../../../../../domain/entities/home/product_entity.dart';

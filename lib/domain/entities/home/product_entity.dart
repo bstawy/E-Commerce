@@ -1,23 +1,60 @@
+import 'package:equatable/equatable.dart';
+import 'package:hive/hive.dart';
+
 import 'brand_entity.dart';
 import 'category_entity.dart';
 import 'sub_category_entity.dart';
 
-class Product {
-  String? id;
-  String? title;
-  String? slug;
-  String? description;
-  num? quantity;
-  num? price;
-  num? priceAfterDiscount;
-  String? imageCover;
-  num? sold;
-  num? ratingsQuantity;
-  num? ratingsAverage;
-  List<String>? images;
-  Brand? brand;
-  Category? category;
-  List<SubCategory>? subcategory;
+part 'product_entity.g.dart';
+
+@HiveType(typeId: 2)
+class Product extends Equatable {
+  @HiveField(0)
+  final String? id;
+
+  @HiveField(1)
+  final String? title;
+
+  @HiveField(2)
+  final String? slug;
+
+  @HiveField(3)
+  final String? description;
+
+  @HiveField(4)
+  final num? quantity;
+
+  @HiveField(5)
+  final num? price;
+
+  @HiveField(6)
+  final num? priceAfterDiscount;
+
+  @HiveField(7)
+  final String? imageCover;
+
+  @HiveField(8)
+  final num? sold;
+
+  @HiveField(9)
+  final num? ratingsQuantity;
+
+  @HiveField(10)
+  final num? ratingsAverage;
+
+  @HiveField(11)
+  final List<String>? images;
+
+  @HiveField(12)
+  final Brand? brand;
+
+  @HiveField(13)
+  final Category? category;
+
+  @HiveField(14)
+  final List<SubCategory>? subcategory;
+
+  @HiveField(15)
   bool? isFavorite;
 
   Product({
@@ -39,29 +76,28 @@ class Product {
     this.isFavorite = false,
   });
 
-  Product.fromJson(dynamic json) {
-    id = json['_id'];
-    title = json['title'];
-    slug = json['slug'];
-    description = json['description'];
-    quantity = json['quantity'];
-    price = json['price'];
-    priceAfterDiscount = json['priceAfterDiscount'];
-    imageCover = json['imageCover'];
-    sold = json['sold'];
-    ratingsQuantity = json['ratingsQuantity'];
-    ratingsAverage = json['ratingsAverage'];
-    images = json['images'] != null ? json['images'].cast<String>() : [];
-    brand = json['brand'] != null ? Brand.fromJson(json['brand']) : null;
-    category =
-        json['category'] != null ? Category.fromJson(json['category']) : null;
-    if (json['subcategory'] != null) {
-      subcategory = [];
-      json['subcategory'].forEach((v) {
-        subcategory?.add(SubCategory.fromJson(v));
-      });
-    }
-    isFavorite = json['isFavorite'] ?? false;
+  factory Product.fromJson(dynamic json) {
+    return Product(
+      id: json['_id'],
+      title: json['title'],
+      slug: json['slug'],
+      description: json['description'],
+      quantity: json['quantity'],
+      price: json['price'],
+      priceAfterDiscount: json['priceAfterDiscount'],
+      imageCover: json['imageCover'],
+      sold: json['sold'],
+      ratingsQuantity: json['ratingsQuantity'],
+      ratingsAverage: json['ratingsAverage'],
+      images: json['images'] != null ? json['images'].cast<String>() : [],
+      brand: json['brand'] != null ? Brand.fromJson(json['brand']) : null,
+      category:
+          json['category'] != null ? Category.fromJson(json['category']) : null,
+      subcategory: json['subcategory']
+          ?.map<SubCategory>((e) => SubCategory.fromJson(e))
+          .toList(),
+      isFavorite: json['isFavorite'] ?? false,
+    );
   }
 
   Map<String, dynamic> toJson() {
@@ -90,4 +126,24 @@ class Product {
     map['isFavorite'] = isFavorite;
     return map;
   }
+
+  @override
+  List<Object?> get props => [
+        id,
+        title,
+        slug,
+        description,
+        quantity,
+        price,
+        priceAfterDiscount,
+        imageCover,
+        sold,
+        ratingsQuantity,
+        ratingsAverage,
+        images,
+        brand,
+        category,
+        subcategory,
+        isFavorite,
+      ];
 }

@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:injectable/injectable.dart';
 
 import '../../../data/models/auth/auth_response.dart';
+import '../../../data/models/categories/sub_categories_response.dart';
 import '../../../data/models/home/brands_response/brands_response.dart';
 import '../../../data/models/home/categories_response/categories_response.dart';
 import '../../../data/models/home/products_response/products_response.dart';
@@ -13,7 +14,7 @@ import '../../../data/models/requests/login_request.dart';
 import '../../../data/models/requests/register_request.dart';
 import '../../../data/models/wish_list_response/action_on_wish_list_response.dart';
 import '../../../data/models/wish_list_response/wish_list_response.dart';
-import '../../../domain/repository/home/products_repository.dart';
+import '../../../domain/repository/home/home_repository.dart';
 import '../../config/constants.dart';
 import '../../di/di.dart';
 import '../../error/server_failure.dart';
@@ -141,7 +142,7 @@ class ApiManager {
     }
   }
 
-  Future<Either<ServerFailure, CategoriesResponse>>
+  Future<Either<ServerFailure, SubCategoriesResponse>>
       getSubCategoriesOnCategoryId(String categoryId) async {
     Uri url = Uri.https(Constants.baseUrl,
         "${EndPoints.allCategories}/$categoryId${EndPoints.subCategoriesOnCategory}");
@@ -153,8 +154,8 @@ class ApiManager {
     debugPrint("===================================================");
 
     if (response.statusCode == 200) {
-      CategoriesResponse subCategories =
-          CategoriesResponse.fromJson(jsonDecode(response.body));
+      SubCategoriesResponse subCategories =
+          SubCategoriesResponse.fromJson(jsonDecode(response.body));
 
       debugPrint("==================== Api Response ====================");
       debugPrint("== ${subCategories.results ?? "null"} ==");
@@ -205,7 +206,7 @@ class ApiManager {
   }
 
   Future<Either<ServerFailure, ProductsResponse>> getProducts(
-      {ProductsSort? sortBy}) async {
+      ProductsSort? sortBy) async {
     Map<String, dynamic>? params = {};
     http.Response response;
 

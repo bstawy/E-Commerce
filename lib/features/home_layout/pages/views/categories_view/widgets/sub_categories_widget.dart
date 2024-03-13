@@ -5,8 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../core/config/page_route_names.dart';
 import '../../../../../../core/extensions/extensions.dart';
-import '../../../../../../domain/entities/home/category_entity.dart';
-import '../manager/cubit/categories_cubit.dart';
+import '../../../../../../domain/entities/home/sub_category_entity.dart';
+import '../manager/categories_cubit/categories_cubit.dart';
 
 class SubCategoriesWidget extends StatelessWidget {
   const SubCategoriesWidget({super.key});
@@ -71,7 +71,7 @@ class SubCategoriesWidget extends StatelessWidget {
     );
   }
 
-  Widget buildGridItem(BuildContext context, Category category) {
+  Widget buildGridItem(BuildContext context, SubCategory category) {
     return GestureDetector(
       onTap: () {
         context.pushNamed(PageRouteNames.categoryProductsScreen,
