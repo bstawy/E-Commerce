@@ -13,7 +13,13 @@ class AddProductToWishListUseCase {
   AddProductToWishListUseCase(this.wishListRepository);
 
   Future<Either<ServerFailure, ActionOnWishListModel?>> execute(
-      String productId) {
-    return wishListRepository.addProductToWishList(productId);
+      String productId) async {
+    var response = await wishListRepository.addProductToWishList(productId);
+
+    return response.fold((l) {
+      return Left(l);
+    }, (r) {
+      return Right(r);
+    });
   }
 }

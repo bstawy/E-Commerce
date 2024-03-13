@@ -1,4 +1,3 @@
-import '../widgets/category_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,8 +5,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../../core/extensions/extensions.dart';
 import '../../../../../../core/services/snackbar_service.dart';
 import '../../../../../widgets/custom_header_and_search.dart';
-import '../manager/cubit/categories_cubit.dart';
+import '../manager/categories_cubit/categories_cubit.dart';
 import '../widgets/categories_shimmer_loading_widget.dart';
+import '../widgets/category_list_item.dart';
 import '../widgets/sub_categories_shimmer_loading_widget.dart';
 import '../widgets/sub_categories_widget.dart';
 
