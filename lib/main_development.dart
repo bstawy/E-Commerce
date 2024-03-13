@@ -6,19 +6,33 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'core/config/app_router.dart';
 import 'core/config/application_theme.dart';
 import 'core/config/page_route_names.dart';
+import 'core/data_services/local_storage/hive_manager.dart';
 import 'core/di/di.dart';
+import 'core/error/run_app_error_widget.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Fix text hides in release mode
-  await ScreenUtil.ensureScreenSize();
+  try {
+    // Fix text hides in release mode
+    await ScreenUtil.ensureScreenSize();
 
-  // Setup getIt package for DI
-  configureDependencies();
+    // Init getIt package for DI
+    configureDependencies();
 
-  // Run app
-  runApp(const MyApp());
+    // Init hive
+    await getIt<HiveManager>().init();
+
+    // Run app
+    runApp(const MyApp());
+  } catch (e) {
+    // Show  error
+    runApp(
+      RunAppErrorWidget(
+        errorMsg: e.toString(),
+      ),
+    );
+  }
 }
 
 class MyApp extends StatelessWidget {
