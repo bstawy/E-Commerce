@@ -15,8 +15,15 @@ class HomeTabState extends HomeLayoutState {
 
 class CategoriesTabState extends HomeLayoutState {
   @override
-  Widget get viewTab => BlocProvider(
-        create: (context) => getIt<CategoriesCubit>(),
+  Widget get viewTab => MultiBlocProvider(
+        providers: [
+          BlocProvider<CategoriesCubit>(
+            create: (context) => getIt<CategoriesCubit>(),
+          ),
+          BlocProvider<SubCategoriesCubit>(
+            create: (context) => getIt<SubCategoriesCubit>(),
+          ),
+        ],
         child: const CategoriesView(),
       );
 }
