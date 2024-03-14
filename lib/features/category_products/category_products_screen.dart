@@ -9,6 +9,7 @@ import '../../core/extensions/extensions.dart';
 import '../../core/services/shimmer_skeleton_service.dart';
 import '../../core/services/snackbar_service.dart';
 import '../../domain/entities/home/category_entity.dart';
+import '../../domain/entities/home/sub_category_entity.dart';
 import '../home_layout/pages/views/wish_list_view/manager/wish_list_cubit.dart'
     as wish_list_cubit;
 import '../widgets/custom_product_widget.dart';
@@ -19,10 +20,11 @@ class CategoryProductsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Category category = ModalRoute.of(context)?.settings.arguments as Category;
+    SubCategory category =
+        ModalRoute.of(context)?.settings.arguments as SubCategory;
     CategoryProductsCubit cubit = getIt<CategoryProductsCubit>();
-    debugPrint(category.name!);
-    debugPrint(category.id!);
+    // debugPrint(category.name!);
+    // debugPrint(category.id!);
 
     return Scaffold(
       appBar: AppBar(
@@ -40,10 +42,10 @@ class CategoryProductsScreen extends StatelessWidget {
         ],
       ),
       body: BlocConsumer<CategoryProductsCubit, CategoryProductsState>(
-        bloc: cubit..getProducts(category.id!),
+        bloc: cubit..getProducts(category.categoryId!),
         listener: (context, state) {
           if (state is FailureState) {
-            return SnackBarService.showErrorMessage(
+            SnackBarService.showErrorMessage(
                 context, state.serverFailure.message!);
           }
         },
@@ -94,14 +96,13 @@ class CategoryProductsScreen extends StatelessWidget {
               ),
             );
           }
-          return buildCategoryProductsShimmerLoadingWidget(context, category);
+          return buildCategoryProductsShimmerLoadingWidget(context);
         },
       ),
     );
   }
 
-  Widget buildCategoryProductsShimmerLoadingWidget(
-      BuildContext context, Category category) {
+  Widget buildCategoryProductsShimmerLoadingWidget(BuildContext context) {
     return Shimmer.fromColors(
       baseColor: Colors.black,
       highlightColor: Colors.grey[100]!,

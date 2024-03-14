@@ -13,17 +13,24 @@ class CategoryProductsRepositoryImp extends CategoryProductsRepository {
   CategoryProductsLocalDataSource categoryProductsLocalDataSource;
 
   @factoryMethod
-  CategoryProductsRepositoryImp(this.categoryProductsRemoteDataSource,
-      this.categoryProductsLocalDataSource);
+  CategoryProductsRepositoryImp(
+    this.categoryProductsRemoteDataSource,
+    this.categoryProductsLocalDataSource,
+  );
 
   @override
-  Future<Either<ServerFailure, List<Product>?>> getCategoryProducts(
-
-      // TODO: get local data
+  Future<Either<ServerFailure, List<Product>>> getCategoryProducts(
       String categoryId) async {
+    List<Product> categoryProducts =
+        categoryProductsLocalDataSource.getCategoryProducts(categoryId);
+
+    if (categoryProducts.isNotEmpty) {
+      return Right(categoryProducts);
+    }
+
     var response =
         await categoryProductsRemoteDataSource.getCategoryProducts(categoryId);
-    // TODO: cache data
+
     return response.fold((l) {
       return Left(l);
     }, (r) {

@@ -21,5 +21,6 @@ class HiveBoxKeys {
   static const String homeProducts = "home_products_box";
   static const String categories = "categories_box";
   static const String subCategories = "sub_categories_box";
+  static const String categoryProducts = "category_products_box";
   static const String wishList = "wish_list_box";
 }
