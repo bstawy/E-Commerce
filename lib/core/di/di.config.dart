@@ -78,11 +78,13 @@ import '../../features/category_products/manager/category_products_cubit.dart'
     as _i45;
 import '../../features/home_layout/manager/home_layout_cubit.dart' as _i13;
 import '../../features/home_layout/pages/views/categories_view/manager/categories_cubit/categories_cubit.dart'
-    as _i54;
+    as _i55;
+import '../../features/home_layout/pages/views/categories_view/manager/sub_categories_cubit/sub_categories_cubit.dart'
+    as _i53;
 import '../../features/home_layout/pages/views/home_view/manager/home_cubit.dart'
     as _i51;
 import '../../features/home_layout/pages/views/wish_list_view/manager/wish_list_cubit.dart'
-    as _i53;
+    as _i54;
 import '../config/constants.dart' as _i11;
 import '../data_services/local_storage/hive_manager.dart' as _i12;
 import '../data_services/local_storage/local_token_manager.dart' as _i20;
@@ -184,16 +186,16 @@ extension GetItInjectableX on _i1.GetIt {
         ));
     gh.factory<_i52.RemoveProductFromWishListUseCase>(() =>
         _i52.RemoveProductFromWishListUseCase(gh<_i35.WishListRepository>()));
-    gh.factory<_i53.WishListCubit>(() => _i53.WishListCubit(
+    gh.factory<_i53.SubCategoriesCubit>(() =>
+        _i53.SubCategoriesCubit(gh<_i49.GetSubCategoriesOnCategoryUseCase>()));
+    gh.factory<_i54.WishListCubit>(() => _i54.WishListCubit(
           gh<_i20.LocalTokenManager>(),
           gh<_i50.GetWishListUseCase>(),
           gh<_i52.RemoveProductFromWishListUseCase>(),
           gh<_i37.AddProductToWishListUseCase>(),
         ));
-    gh.factory<_i54.CategoriesCubit>(() => _i54.CategoriesCubit(
-          gh<_i47.GetCategoriesUseCase>(),
-          gh<_i49.GetSubCategoriesOnCategoryUseCase>(),
-        ));
+    gh.factory<_i55.CategoriesCubit>(
+        () => _i55.CategoriesCubit(gh<_i47.GetCategoriesUseCase>()));
     return this;
   }
 }
