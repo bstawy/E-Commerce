@@ -29,6 +29,7 @@ class HiveManager {
     await Hive.openBox<Product>(HiveBoxKeys.homeProducts);
     await Hive.openBox<Category>(HiveBoxKeys.categories);
     await Hive.openBox<SubCategory>(HiveBoxKeys.subCategories);
+    await Hive.openBox<Product>(HiveBoxKeys.categoryProducts);
     await Hive.openBox<Product>(HiveBoxKeys.wishList);
   }
 
