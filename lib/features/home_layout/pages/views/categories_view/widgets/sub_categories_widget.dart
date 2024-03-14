@@ -79,9 +79,9 @@ class SubCategoriesWidget extends StatelessWidget {
       BuildContext context, Category category, SubCategory subCategory) {
     return GestureDetector(
       onTap: () {
-        //TODO: Navigate to category products screen
         context.pushNamed(
           PageRouteNames.categoryProductsScreen,
+          arguments: subCategory,
         );
       },
       child: Column(
