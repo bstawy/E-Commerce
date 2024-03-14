@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../core/extensions/extensions.dart';
 import '../../../../../../core/services/snackbar_service.dart';
+import '../../../../../../domain/entities/home/category_entity.dart';
 import '../../../../../widgets/custom_header_and_search.dart';
 import '../manager/categories_cubit/categories_cubit.dart';
 import '../manager/sub_categories_cubit/sub_categories_cubit.dart';
@@ -29,30 +30,29 @@ class CategoriesView extends StatelessWidget {
             children: [
               BlocBuilder<CategoriesCubit, CategoriesState>(
                 bloc: context.read<CategoriesCubit>()..getCategories(),
-                buildWhen: (previous, current) {
-                  if (current is ChangeCategoryState) false;
-                  return true;
-                },
                 builder: (context, state) {
                   debugPrint(
                       "Categories Cubit State: ${state is CategoriesSuccessState}");
-                  if (state is CategoriesSuccessState) {
-                    return buildCategoriesWidget(context, state);
+                  if (state is CategoriesLoadingState) {
+                    return const CategoriesShimmerLoadingWidget();
                   } else if (state is CategoriesFailureState) {
                     SnackBarService.showErrorMessage(
                         context, state.serverFailure!.message!);
                   }
-                  return const CategoriesShimmerLoadingWidget();
+                  return buildCategoriesWidget(context,
+                      context.read<CategoriesCubit>().categories ?? []);
                 },
               ),
               SizedBox(width: 24.w),
               BlocConsumer<CategoriesCubit, CategoriesState>(
                 builder: (context, state) {
-                  if (state is CategoriesSuccessState) {
+                  if (state is CategoriesSuccessState ||
+                      state is ChangeCategoryState) {
                     return BlocBuilder<SubCategoriesCubit, SubCategoriesState>(
                       bloc: context.read<SubCategoriesCubit>()
-                        ..getSubCategoriesOnCategory(state
-                            .categories[context
+                        ..getSubCategoriesOnCategory(context
+                            .read<CategoriesCubit>()
+                            .categories![context
                                 .read<CategoriesCubit>()
                                 .selectedCategoryIndex]
                             .id!),
@@ -82,7 +82,7 @@ class CategoriesView extends StatelessWidget {
   }
 
   Container buildCategoriesWidget(
-      BuildContext context, CategoriesSuccessState state) {
+      BuildContext context, List<Category> categories) {
     return Container(
       width: 150.w,
       height: MediaQuery.sizeOf(context).height - 230.h,
@@ -107,14 +107,14 @@ class CategoriesView extends StatelessWidget {
           bottomLeft: Radius.circular(10.r),
         ),
         child: ListView.builder(
-          itemCount: state.categories.length,
+          itemCount: categories.length,
           itemBuilder: (context, index) {
             return GestureDetector(
               onTap: () {
                 if (context.read<CategoriesCubit>().selectedCategoryIndex !=
                     index) {
                   context.read<CategoriesCubit>().changeCategory(index);
-                  final categoryId = state.categories[index].id!;
+                  final categoryId = categories[index].id!;
                   context
                       .read<SubCategoriesCubit>()
                       .getSubCategoriesOnCategory(categoryId);
@@ -122,13 +122,6 @@ class CategoriesView extends StatelessWidget {
               },
               child: BlocBuilder<CategoriesCubit, CategoriesState>(
                 bloc: context.read<CategoriesCubit>(),
-                buildWhen: (previous, current) {
-                  if (previous is CategoriesSuccessState &&
-                      current is ChangeCategoryState) {
-                    return true;
-                  }
-                  return false;
-                },
                 builder: (context, state) {
                   return CategoryListItem(
                     category:
