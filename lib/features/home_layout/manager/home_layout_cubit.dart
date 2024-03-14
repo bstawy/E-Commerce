@@ -4,6 +4,7 @@ import 'package:injectable/injectable.dart';
 
 import '../../../core/di/di.dart';
 import '../pages/views/categories_view/manager/categories_cubit/categories_cubit.dart';
+import '../pages/views/categories_view/manager/sub_categories_cubit/sub_categories_cubit.dart';
 import '../pages/views/categories_view/pages/categories_view.dart';
 import '../pages/views/home_view/manager/home_cubit.dart';
 import '../pages/views/home_view/pages/home_view.dart';

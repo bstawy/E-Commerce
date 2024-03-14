@@ -4,8 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../core/extensions/extensions.dart';
 import '../../../../../../core/services/snackbar_service.dart';
+import '../../../../../../domain/entities/home/category_entity.dart';
 import '../../../../../widgets/custom_header_and_search.dart';
 import '../manager/categories_cubit/categories_cubit.dart';
+import '../manager/sub_categories_cubit/sub_categories_cubit.dart';
 import '../widgets/categories_shimmer_loading_widget.dart';
 import '../widgets/category_list_item.dart';
 import '../widgets/sub_categories_shimmer_loading_widget.dart';
@@ -16,8 +18,6 @@ class CategoriesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    CategoriesCubit categoriesCubit = context.read<CategoriesCubit>();
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -28,54 +28,51 @@ class CategoriesView extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              BlocConsumer<CategoriesCubit, CategoriesState>(
-                bloc: categoriesCubit..getCategories(),
-                buildWhen: (previous, current) {
-                  if (current is FailureState) return false;
-                  if (current is SubCategoriesLoadingState) return true;
-                  return true;
-                },
-                listenWhen: (previous, current) {
-                  if (current is SubCategoriesLoadedState) return true;
-                  if (current is FailureState) return true;
-                  return false;
-                },
+              BlocBuilder<CategoriesCubit, CategoriesState>(
+                bloc: context.read<CategoriesCubit>()..getCategories(),
                 builder: (context, state) {
-                  if (state is LoadingState) {
+                  debugPrint(
+                      "Categories Cubit State: ${state is CategoriesSuccessState}");
+                  if (state is CategoriesLoadingState) {
                     return const CategoriesShimmerLoadingWidget();
-                  }
-                  return buildCategoriesWidget(context);
-                },
-                listener: (context, state) {
-                  if (state is FailureState) {
+                  } else if (state is CategoriesFailureState) {
                     SnackBarService.showErrorMessage(
                         context, state.serverFailure!.message!);
                   }
+                  return buildCategoriesWidget(context,
+                      context.read<CategoriesCubit>().categories ?? []);
                 },
               ),
               SizedBox(width: 24.w),
               BlocConsumer<CategoriesCubit, CategoriesState>(
-                bloc: categoriesCubit,
-                buildWhen: (previous, current) {
-                  if (current is FailureState) return false;
-                  return true;
-                },
-                listenWhen: (previous, current) {
-                  if (current is FailureState) return true;
-                  return false;
-                },
                 builder: (context, state) {
-                  if (state is SubCategoriesLoadedState) {
-                    return const SubCategoriesWidget();
+                  if (state is CategoriesSuccessState ||
+                      state is ChangeCategoryState) {
+                    return BlocBuilder<SubCategoriesCubit, SubCategoriesState>(
+                      bloc: context.read<SubCategoriesCubit>()
+                        ..getSubCategoriesOnCategory(context
+                            .read<CategoriesCubit>()
+                            .categories![context
+                                .read<CategoriesCubit>()
+                                .selectedCategoryIndex]
+                            .id!),
+                      builder: (context, state) {
+                        debugPrint("Sub Categories Cubit State: $state");
+                        if (state is SubCategoriesSuccessState) {
+                          return SubCategoriesWidget(
+                            state: state,
+                          );
+                        } else if (state is SubCategoriesFailureState) {
+                          SnackBarService.showErrorMessage(
+                              context, state.serverFailure.message!);
+                        }
+                        return const SubCategoriesShimmerLoadingWidget();
+                      },
+                    );
                   }
                   return const SubCategoriesShimmerLoadingWidget();
                 },
-                listener: (context, state) {
-                  if (state is FailureState) {
-                    SnackBarService.showErrorMessage(
-                        context, state.serverFailure!.message!);
-                  }
-                },
+                listener: (context, state) {},
               ),
             ],
           ),
@@ -84,7 +81,8 @@ class CategoriesView extends StatelessWidget {
     );
   }
 
-  Container buildCategoriesWidget(BuildContext context) {
+  Container buildCategoriesWidget(
+      BuildContext context, List<Category> categories) {
     return Container(
       width: 150.w,
       height: MediaQuery.sizeOf(context).height - 230.h,
@@ -109,20 +107,30 @@ class CategoriesView extends StatelessWidget {
           bottomLeft: Radius.circular(10.r),
         ),
         child: ListView.builder(
-          itemCount: context.read<CategoriesCubit>().categories!.length,
+          itemCount: categories.length,
           itemBuilder: (context, index) {
             return GestureDetector(
               onTap: () {
                 if (context.read<CategoriesCubit>().selectedCategoryIndex !=
                     index) {
                   context.read<CategoriesCubit>().changeCategory(index);
+                  final categoryId = categories[index].id!;
+                  context
+                      .read<SubCategoriesCubit>()
+                      .getSubCategoriesOnCategory(categoryId);
                 }
               },
-              child: CategoryListItem(
-                category: context.read<CategoriesCubit>().categories![index],
-                isSelected:
-                    context.read<CategoriesCubit>().selectedCategoryIndex ==
-                        index,
+              child: BlocBuilder<CategoriesCubit, CategoriesState>(
+                bloc: context.read<CategoriesCubit>(),
+                builder: (context, state) {
+                  return CategoryListItem(
+                    category:
+                        context.read<CategoriesCubit>().categories![index],
+                    isSelected:
+                        context.read<CategoriesCubit>().selectedCategoryIndex ==
+                            index,
+                  );
+                },
               ),
             );
           },
@@ -131,3 +139,12 @@ class CategoriesView extends StatelessWidget {
     );
   }
 }
+
+/*
+getSubCategoriesOnCategory(context
+                            .read<CategoriesCubit>()
+                            .categories![context
+                                .read<CategoriesCubit>()
+                                .selectedCategoryIndex]
+                            .id!),
+*/
