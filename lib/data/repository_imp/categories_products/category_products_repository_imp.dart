@@ -3,7 +3,7 @@ import 'package:injectable/injectable.dart';
 
 import '../../../core/error/server_failure.dart';
 import '../../../domain/entities/home/product_entity.dart';
-import '../../../domain/repository/category_products_repository/category_products_repository.dart';
+import '../../../domain/repository/category_products/category_products_repository.dart';
 import '../../data_source/category_products/category_products_local_data_source.dart';
 import '../../data_source/category_products/category_products_remote_data_source.dart';
 
