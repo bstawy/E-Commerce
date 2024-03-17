@@ -12,6 +12,7 @@ class EndPoints {
   static const String allBrands = "/api/v1/brands";
   static const String allProducts = "/api/v1/products";
   static const String wishList = "/api/v1/wishlist";
+  static const String cart = "/api/v1/cart";
 }
 
 @injectable
