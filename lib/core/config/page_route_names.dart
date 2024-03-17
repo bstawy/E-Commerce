@@ -4,4 +4,5 @@ class PageRouteNames {
   static const String signUp = "signUp";
   static const String productDetailsScreen = "product-details";
   static const String categoryProductsScreen = "category-products";
+  static const String cartScreen = "cart";
 }
