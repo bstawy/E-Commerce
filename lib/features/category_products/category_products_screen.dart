@@ -8,7 +8,6 @@ import '../../core/di/di.dart';
 import '../../core/extensions/extensions.dart';
 import '../../core/services/shimmer_skeleton_service.dart';
 import '../../core/services/snackbar_service.dart';
-import '../../domain/entities/home/category_entity.dart';
 import '../../domain/entities/home/sub_category_entity.dart';
 import '../home_layout/pages/views/wish_list_view/manager/wish_list_cubit.dart'
     as wish_list_cubit;
