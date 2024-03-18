@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../features/auth/manager/auth_cubit.dart';
 import '../../features/auth/pages/login/login_screen.dart';
 import '../../features/auth/pages/register/register_screen.dart';
-import '../../features/cart/manager/cart_cubit_cubit.dart';
+import '../../features/cart/manager/cart_cubit.dart';
 import '../../features/cart/pages/cart_screen.dart';
 import '../../features/category_products/category_products_screen.dart';
 import '../../features/category_products/manager/category_products_cubit.dart';
