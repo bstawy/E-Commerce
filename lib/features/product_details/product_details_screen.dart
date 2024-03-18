@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../core/config/page_route_names.dart';
 import '../../core/di/di.dart';
 import '../../core/extensions/extensions.dart';
 import '../../domain/entities/home/product_entity.dart';
@@ -35,7 +36,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         actions: [
           GestureDetector(
             onTap: () {
-              // TODO: Navigate to cart
+              context.pushNamed(PageRouteNames.cartScreen);
             },
             child: SvgPicture.asset("assets/icons/cart_icon.svg"),
           ).setOnlyPadding(context, 0, 0, 0, 16.w),
@@ -323,7 +324,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             borderRadius: 20.r,
             height: 50.h,
             onClicked: () {
-              // TODO: Navigate to cart screen
+              context.pushNamed(PageRouteNames.cartScreen);
             },
           ),
         ),
