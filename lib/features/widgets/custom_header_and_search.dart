@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../core/extensions/extensions.dart';
+import '../../core/config/page_route_names.dart';
 
 class CustomHeaderAndSearch extends StatelessWidget {
   const CustomHeaderAndSearch({super.key});
@@ -60,13 +61,18 @@ class CustomHeaderAndSearch extends StatelessWidget {
                   ),
                 ),
               ),
-              SvgPicture.asset(
-                "assets/icons/cart_icon.svg",
-                colorFilter: ColorFilter.mode(
-                    context.theme.colorScheme.primary, BlendMode.srcIn),
-                width: 24.w,
-                height: 24.h,
-                fit: BoxFit.contain,
+              GestureDetector(
+                onTap: () {
+                  context.pushNamed(PageRouteNames.cartScreen);
+                },
+                child: SvgPicture.asset(
+                  "assets/icons/cart_icon.svg",
+                  colorFilter: ColorFilter.mode(
+                      context.theme.colorScheme.primary, BlendMode.srcIn),
+                  width: 24.w,
+                  height: 24.h,
+                  fit: BoxFit.contain,
+                ),
               ),
             ],
           ),
