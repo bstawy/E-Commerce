@@ -1,14 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../core/config/page_route_names.dart';
 import '../../core/di/di.dart';
 import '../../core/extensions/extensions.dart';
+import '../../core/services/loading_service.dart';
+import '../../core/services/snackbar_service.dart';
 import '../../domain/entities/home/product_entity.dart';
-import '../cart/manager/cart_cubit.dart';
+import '../cart/manager/cart_cubit.dart' as cart;
 import '../home_layout/pages/views/wish_list_view/manager/wish_list_cubit.dart';
 
 class CustomProductWidget extends StatelessWidget {
@@ -25,7 +28,7 @@ class CustomProductWidget extends StatelessWidget {
       providers: [
         BlocProvider(
             create: (context) => getIt<WishListCubit>()..checkLogging()),
-        BlocProvider(create: (context) => getIt<CartCubit>()),
+        BlocProvider(create: (context) => getIt<cart.CartCubit>()),
       ],
       child: Container(
         width: 190.w,
@@ -97,6 +100,8 @@ class CustomProductWidget extends StatelessWidget {
   }
 
   Widget buildFooter(BuildContext context) {
+    cart.CartCubit cartCubit = getIt<cart.CartCubit>();
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -113,15 +118,27 @@ class CustomProductWidget extends StatelessWidget {
                 .setHorizontalPadding(context, 4.w),
           ],
         ),
-        BlocListener<CartCubit, CartState>(
+        BlocListener<cart.CartCubit, cart.CartState>(
+          bloc: cartCubit,
           listener: (context, state) {
-            // if (state is CartSuccessState) {
-            //   SnackBarService.showSuccessMessage(context, state.message);
-            // }
-            //TODO: handle user not logged
+            if (state is cart.LoadingState) {
+              configureEasyLoading();
+              EasyLoading.show();
+            } else if (state is cart.AddToCartSuccessState) {
+              EasyLoading.dismiss();
+              SnackBarService.showSuccessMessage(context, state.message);
+            } else if (state is cart.FailureState) {
+              EasyLoading.dismiss();
+              SnackBarService.showErrorMessage(
+                  context, state.serverFailure.message!);
+            } else if (state is cart.SuccessState) {
+              EasyLoading.dismiss();
+            }
           },
           child: GestureDetector(
-            onTap: () {},
+            onTap: () {
+              cartCubit.addProductToCart(product.id!);
+            },
             child: Icon(
               Icons.add_circle,
               size: 35.r,
