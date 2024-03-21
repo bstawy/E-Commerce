@@ -6,8 +6,9 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../../../../../core/extensions/extensions.dart';
 import '../../../../../../domain/entities/home/product_entity.dart';
+import '../manager/cart_cubit.dart';
 
-class CartItemWidget extends StatefulWidget {
+class CartItemWidget extends StatelessWidget {
   final Product product;
   final num price;
   final num quantity;
@@ -18,19 +19,6 @@ class CartItemWidget extends StatefulWidget {
     required this.price,
     required this.quantity,
   });
-
-  @override
-  State<CartItemWidget> createState() => _CartItemWidgetState();
-}
-
-class _CartItemWidgetState extends State<CartItemWidget> {
-  late int numberOfItemstoBeAddedToCart;
-
-  @override
-  void initState() {
-    super.initState();
-    numberOfItemstoBeAddedToCart = widget.quantity.toInt();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +37,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           CachedNetworkImage(
-            imageUrl: widget.product.imageCover ?? "",
+            imageUrl: product.imageCover ?? "",
             placeholder: (context, url) => const CircularProgressIndicator(),
             imageBuilder: (context, imageProvider) {
               return Container(
@@ -75,7 +63,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  widget.product.title ?? "",
+                  product.title ?? "",
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: context.theme.textTheme.titleSmall!.copyWith(
@@ -83,7 +71,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                   ),
                 ),
                 Text(
-                  "Brand: ${widget.product.brand?.name}",
+                  "Brand: ${product.brand?.name}",
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: context.theme.textTheme.bodyLarge!.copyWith(
@@ -91,7 +79,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                   ),
                 ),
                 Text(
-                  "EGP ${widget.price}",
+                  "EGP $price",
                   style: context.theme.textTheme.bodyLarge!.copyWith(
                     fontWeight: FontWeight.w400,
                   ),
@@ -106,10 +94,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
             children: [
               GestureDetector(
                 onTap: () {
-                  //TODO: delete product from cart
-                  // context
-                  //     .read<WishListCubit>()
-                  //     .removeProductFromWishList(product.id!);
+                  context.read<CartCubit>().removeProductFromCart(product.id!);
                 },
                 child: Container(
                   width: 30.w,
@@ -142,11 +127,12 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        //TODO: update number of items in cart
-                        numberOfItemstoBeAddedToCart > 0
-                            ? numberOfItemstoBeAddedToCart--
-                            : numberOfItemstoBeAddedToCart = 0;
-                        setState(() {});
+                        if (quantity > 1) {
+                          context.read<CartCubit>().updateCartProductQuantity(
+                                product.id!,
+                                "${quantity - 1}",
+                              );
+                        }
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -164,14 +150,15 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                       ),
                     ),
                     Text(
-                      "$numberOfItemstoBeAddedToCart",
+                      "$quantity",
                       style: context.theme.textTheme.titleSmall,
                     ),
                     GestureDetector(
                       onTap: () {
-                        //TODO: update number of items in cart
-                        numberOfItemstoBeAddedToCart++;
-                        setState(() {});
+                        context.read<CartCubit>().updateCartProductQuantity(
+                              product.id!,
+                              "${quantity + 1}",
+                            );
                       },
                       child: Container(
                         decoration: BoxDecoration(

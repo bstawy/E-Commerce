@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../core/extensions/extensions.dart';
@@ -23,6 +24,14 @@ class CartScreen extends StatelessWidget {
           color: context.theme.colorScheme.primary,
         ),
         title: const Text("Cart"),
+        actions: [
+          GestureDetector(
+            onTap: () {
+              cartCubit.clearCart();
+            },
+            child: SvgPicture.asset("assets/icons/delete_icon.svg"),
+          ).setOnlyPadding(context, 0, 10.h, 0, 26.w),
+        ],
       ),
       body: BlocBuilder<CartCubit, CartState>(
         bloc: cartCubit..getCartProducts(),
@@ -42,7 +51,16 @@ class CartScreen extends StatelessWidget {
               return buildSuccessWidget(context, state);
 
             case FailureState():
-              return Center(child: Text(state.serverFailure.message!));
+              if (state.serverFailure.statusCode == "404") {
+                return buildEmptyWidget(context);
+              }
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(state.serverFailure.message!),
+                ],
+              );
             default:
               return buildEmptyWidget(context);
           }
@@ -53,8 +71,9 @@ class CartScreen extends StatelessWidget {
 
   Widget buildEmptyWidget(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        SizedBox(height: 280.h),
         Text(
           "Your Cart is empty...",
           textAlign: TextAlign.center,
@@ -85,28 +104,44 @@ class CartScreen extends StatelessWidget {
         ),
         SizedBox(height: 16.h),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              "Total price\nEGP ${state.data.totalCartPrice}",
-              style: context.theme.textTheme.bodyLarge!.copyWith(
-                color: context.theme.colorScheme.onPrimary,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Total price",
+                    style: context.theme.textTheme.titleSmall!.copyWith(
+                      color:
+                          context.theme.colorScheme.onPrimary.withOpacity(0.6),
+                    ),
+                  ),
+                  Text(
+                    "EGP ${state.data.totalCartPrice}",
+                    style: context.theme.textTheme.titleSmall!.copyWith(
+                      color: context.theme.colorScheme.onPrimary,
+                    ),
+                  ),
+                ],
               ),
             ),
-            CustomMaterialButton(
-              title: "Check Out\t\t->",
-              backgroundColor: context.theme.colorScheme.primary,
-              borderRadius: 20.r,
-              padding: 8.r,
-              titleStyle: context.theme.textTheme.titleMedium!.copyWith(
-                color: Colors.white,
-                fontWeight: FontWeight.w500,
+            Expanded(
+              flex: 2,
+              child: CustomMaterialButton(
+                title: "Check Out\t\t->",
+                backgroundColor: context.theme.colorScheme.primary,
+                borderRadius: 20.r,
+                padding: 8.r,
+                titleStyle: context.theme.textTheme.titleMedium!.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                ),
+                height: 50.h,
+                minWidth: 280.w,
+                onClicked: () {
+                  // TODO: handle transaction
+                },
               ),
-              height: 50.h,
-              minWidth: 280.w,
-              onClicked: () {
-                // TODO: handle transaction
-              },
             ),
           ],
         ),
