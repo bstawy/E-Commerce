@@ -492,14 +492,7 @@ class ApiManager {
     );
 
     if (response.statusCode == 200) {
-      var decodedResponse = jsonDecode(response.body);
-      debugPrint("==================== Response ====================");
-      debugPrint("== ${decodedResponse.status} ==");
-      debugPrint("== ${decodedResponse.message} ==");
-      debugPrint("== ${decodedResponse.data} ==");
-      debugPrint("===================================================");
-
-      return Right(decodedResponse.message);
+      return const Right("Product added successfully to your cart");
     } else {
       ServerFailure serverFailure = ServerFailure.fromJson(
           response.statusCode, jsonDecode(response.body));
@@ -635,14 +628,7 @@ class ApiManager {
     );
 
     if (response.statusCode == 200) {
-      var decodedResponse = jsonDecode(response.body);
-      debugPrint("==================== Response ====================");
-      debugPrint("== ${decodedResponse.status} ==");
-      debugPrint("== ${decodedResponse.message} ==");
-      debugPrint("== ${decodedResponse.data} ==");
-      debugPrint("===================================================");
-
-      return Right(decodedResponse.message);
+      return const Right("Success");
     } else {
       ServerFailure serverFailure = ServerFailure.fromJson(
           response.statusCode, jsonDecode(response.body));
