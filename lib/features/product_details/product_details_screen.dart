@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../core/config/page_route_names.dart';
 import '../../core/di/di.dart';
 import '../../core/extensions/extensions.dart';
+import '../../core/services/loading_service.dart';
+import '../../core/services/snackbar_service.dart';
 import '../../domain/entities/home/product_entity.dart';
+import '../cart/manager/cart_cubit.dart' as cart;
 import '../home_layout/pages/views/wish_list_view/manager/wish_list_cubit.dart';
 import '../widgets/custom_material_button.dart';
 import 'widgets/product_images_carousel.dart';
@@ -19,7 +24,7 @@ class ProductDetailsScreen extends StatefulWidget {
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   int currentIndex = 0;
-  int numberOfItemstoBeAddedToCart = 1;
+  int quantity = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -133,9 +138,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             children: [
               GestureDetector(
                 onTap: () {
-                  numberOfItemstoBeAddedToCart > 0
-                      ? numberOfItemstoBeAddedToCart--
-                      : numberOfItemstoBeAddedToCart = 0;
+                  if (quantity > 1) quantity--;
+
                   setState(() {});
                 },
                 child: Container(
@@ -154,12 +158,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 ),
               ),
               Text(
-                "$numberOfItemstoBeAddedToCart",
+                "$quantity",
                 style: context.theme.textTheme.titleSmall,
               ),
               GestureDetector(
                 onTap: () {
-                  numberOfItemstoBeAddedToCart++;
+                  quantity++;
                   setState(() {});
                 },
                 child: Container(
@@ -290,6 +294,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
   Widget buildTotalPriceAndAddToCartButton(
       BuildContext context, Product product) {
+    final cart.CartCubit cartCubit = getIt<cart.CartCubit>();
+
     return Row(
       children: [
         Expanded(
@@ -304,8 +310,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               ),
               Text(
                 product.priceAfterDiscount == null
-                    ? "EGP ${product.price! * numberOfItemstoBeAddedToCart}"
-                    : "EGP ${product.priceAfterDiscount! * numberOfItemstoBeAddedToCart}",
+                    ? "EGP ${product.price! * quantity}"
+                    : "EGP ${product.priceAfterDiscount! * quantity}",
                 style: context.theme.textTheme.titleSmall!.copyWith(
                   color: context.theme.colorScheme.onPrimary,
                 ),
@@ -315,17 +321,39 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         ),
         Expanded(
           flex: 2,
-          child: CustomMaterialButton(
-            title: "Add to cart",
-            titleStyle: context.theme.textTheme.titleSmall!.copyWith(
-              color: context.theme.colorScheme.background,
-            ),
-            backgroundColor: context.theme.colorScheme.primary,
-            borderRadius: 20.r,
-            height: 50.h,
-            onClicked: () {
-              context.pushNamed(PageRouteNames.cartScreen);
+          child: BlocListener<cart.CartCubit, cart.CartState>(
+            bloc: cartCubit,
+            listener: (context, state) {
+              if (state is cart.LoadingState) {
+                configureEasyLoading();
+                EasyLoading.show();
+              } else if (state is cart.AddToCartSuccessState) {
+                if (quantity > 1) {
+                  cartCubit.updateCartProductQuantity(
+                      product.id!, quantity.toString());
+                }
+                EasyLoading.dismiss();
+                SnackBarService.showSuccessMessage(context, state.message);
+              } else if (state is cart.FailureState) {
+                EasyLoading.dismiss();
+                SnackBarService.showErrorMessage(
+                    context, state.serverFailure.message!);
+              } else if (state is cart.SuccessState) {
+                EasyLoading.dismiss();
+              }
             },
+            child: CustomMaterialButton(
+              title: "Add to cart",
+              titleStyle: context.theme.textTheme.titleSmall!.copyWith(
+                color: context.theme.colorScheme.background,
+              ),
+              backgroundColor: context.theme.colorScheme.primary,
+              borderRadius: 20.r,
+              height: 50.h,
+              onClicked: () {
+                cartCubit.addProductToCart(product.id!);
+              },
+            ),
           ),
         ),
       ],
