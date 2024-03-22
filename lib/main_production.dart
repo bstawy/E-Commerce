@@ -13,26 +13,23 @@ import 'core/error/run_app_error_widget.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  try {
-    // Fix text hides in release mode
-    await ScreenUtil.ensureScreenSize();
+  // Init getIt package for DI
+  configureDependencies();
 
-    // Init getIt package for DI
-    configureDependencies();
+  Future.wait([
+    // Fix text not shown in release mode
+    ScreenUtil.ensureScreenSize(),
 
-    // Init hive
-    await getIt<HiveManager>().init();
-
-    // Run app
+    getIt<HiveManager>().init(),
+  ]).then((_) {
     runApp(const MyApp());
-  } catch (e) {
-    // Show  error
+  }).catchError((e) {
     runApp(
       RunAppErrorWidget(
         errorMsg: e.toString(),
       ),
     );
-  }
+  });
 }
 
 class MyApp extends StatelessWidget {
