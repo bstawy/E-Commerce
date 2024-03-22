@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../../../../../core/extensions/extensions.dart';
 import '../../../../../../domain/entities/home/product_entity.dart';
+import '../../../core/services/number_formatter.dart';
 import '../manager/cart_cubit.dart';
 
 class CartItemWidget extends StatelessWidget {
@@ -79,7 +80,7 @@ class CartItemWidget extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "EGP $price",
+                  "EGP ${formatNumber(price)}",
                   style: context.theme.textTheme.bodyLarge!.copyWith(
                     fontWeight: FontWeight.w400,
                   ),

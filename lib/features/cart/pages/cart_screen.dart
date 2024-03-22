@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../core/extensions/extensions.dart';
+import '../../../core/services/number_formatter.dart';
 import '../../../core/services/shimmer_skeleton_service.dart';
 import '../../home_layout/widgets/login_required_widget.dart';
 import '../../widgets/custom_material_button.dart';
@@ -117,7 +118,7 @@ class CartScreen extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    "EGP ${state.data.totalCartPrice}",
+                    "EGP ${formatNumber(state.data.totalCartPrice!)}",
                     style: context.theme.textTheme.titleSmall!.copyWith(
                       color: context.theme.colorScheme.onPrimary,
                     ),

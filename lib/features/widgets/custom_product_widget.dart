@@ -9,6 +9,7 @@ import '../../core/config/page_route_names.dart';
 import '../../core/di/di.dart';
 import '../../core/extensions/extensions.dart';
 import '../../core/services/loading_service.dart';
+import '../../core/services/number_formatter.dart';
 import '../../core/services/snackbar_service.dart';
 import '../../domain/entities/home/product_entity.dart';
 import '../cart/manager/cart_cubit.dart' as cart;
@@ -71,7 +72,7 @@ class CustomProductWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "EGP ${product.priceAfterDiscount ?? product.price}",
+                      "EGP ${formatNumber(product.priceAfterDiscount ?? product.price!)}",
                       style: context.theme.textTheme.bodyLarge!.copyWith(
                         fontWeight: FontWeight.w400,
                       ),
@@ -80,7 +81,7 @@ class CustomProductWidget extends StatelessWidget {
                     Visibility(
                       visible: product.priceAfterDiscount != null,
                       child: Text(
-                        "${product.price} EGP",
+                        "${formatNumber(product.price!)} EGP",
                         style: context.theme.textTheme.bodySmall!.copyWith(
                           fontWeight: FontWeight.w300,
                           decoration: TextDecoration.lineThrough,

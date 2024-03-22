@@ -8,6 +8,7 @@ import '../../core/config/page_route_names.dart';
 import '../../core/di/di.dart';
 import '../../core/extensions/extensions.dart';
 import '../../core/services/loading_service.dart';
+import '../../core/services/number_formatter.dart';
 import '../../core/services/snackbar_service.dart';
 import '../../domain/entities/home/product_entity.dart';
 import '../cart/manager/cart_cubit.dart' as cart;
@@ -89,7 +90,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           ),
         ),
         Text(
-          "EGP ${product.priceAfterDiscount ?? product.price}",
+          "EGP ${formatNumber(product.priceAfterDiscount ?? product.price!)}",
           style: context.theme.textTheme.titleSmall!.copyWith(
             color: context.theme.colorScheme.onPrimary,
           ),
@@ -110,7 +111,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 color: context.theme.colorScheme.primary.withOpacity(0.3),
               )),
           child: Text(
-            "${product.sold} Sold",
+            "${formatNumber(product.sold!)} Sold",
             style: context.theme.textTheme.bodyLarge,
           ),
         ),
@@ -310,8 +311,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               ),
               Text(
                 product.priceAfterDiscount == null
-                    ? "EGP ${product.price! * quantity}"
-                    : "EGP ${product.priceAfterDiscount! * quantity}",
+                    ? "EGP ${formatNumber(product.price! * quantity)}"
+                    : "EGP ${formatNumber(product.priceAfterDiscount! * quantity)}",
                 style: context.theme.textTheme.titleSmall!.copyWith(
                   color: context.theme.colorScheme.onPrimary,
                 ),
