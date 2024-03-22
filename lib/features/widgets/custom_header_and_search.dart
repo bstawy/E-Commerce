@@ -41,23 +41,28 @@ class CustomHeaderAndSearch extends StatelessWidget {
                     border:
                         Border.all(color: context.theme.colorScheme.primary),
                   ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.search_rounded,
-                        color: context.theme.colorScheme.primary,
-                        size: 24.r,
-                      ),
-                      SizedBox(width: 8.w),
-                      Text(
-                        "What do you search for ?",
-                        style: context.theme.textTheme.bodySmall!.copyWith(
-                          color: context.theme.colorScheme.primary
-                              .withOpacity(0.6),
-                          fontWeight: FontWeight.w300,
+                  child: GestureDetector(
+                    onTap: () {
+                      // TODO: Navigate to search screen
+                    },
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.search_rounded,
+                          color: context.theme.colorScheme.primary,
+                          size: 24.r,
                         ),
-                      ),
-                    ],
+                        SizedBox(width: 8.w),
+                        Text(
+                          "What do you search for ?",
+                          style: context.theme.textTheme.bodySmall!.copyWith(
+                            color: context.theme.colorScheme.primary
+                                .withOpacity(0.6),
+                            fontWeight: FontWeight.w300,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
