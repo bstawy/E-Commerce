@@ -31,14 +31,9 @@ class HomeGridWidget extends StatelessWidget {
                 color: context.theme.colorScheme.primary,
               ),
             ),
-            GestureDetector(
-              onTap: () {
-                // TODO: Navigate to all categories screen
-              },
-              child: Text(
-                "View all",
-                style: context.theme.textTheme.bodySmall,
-              ),
+            Text(
+              "View all",
+              style: context.theme.textTheme.bodySmall,
             ),
           ],
         ).setHorizontalPadding(context, 16.w),
@@ -66,47 +61,42 @@ class HomeGridWidget extends StatelessWidget {
   }
 
   Widget buildGridItem(BuildContext context, dynamic model) {
-    return GestureDetector(
-      onTap: () {
-        // TODO: Navigate to selected category screen
-      },
-      child: Column(
-        children: [
-          CachedNetworkImage(
-            imageBuilder: (context, imageProvider) {
-              return Container(
-                height: 100,
-                width: 100,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    image: imageProvider,
-                    fit: imageFit ?? BoxFit.cover,
-                  ),
+    return Column(
+      children: [
+        CachedNetworkImage(
+          imageBuilder: (context, imageProvider) {
+            return Container(
+              height: 100,
+              width: 100,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                  image: imageProvider,
+                  fit: imageFit ?? BoxFit.cover,
                 ),
-              );
-            },
-            imageUrl: model.imageUrl,
-            height: 100,
-            width: 100,
-            placeholder: (context, url) => const Center(
-              child: CircularProgressIndicator(),
-            ),
-            errorWidget: (context, url, error) => const Center(
-              child: Icon(Icons.error),
-            ),
+              ),
+            );
+          },
+          imageUrl: model.imageUrl,
+          height: 100,
+          width: 100,
+          placeholder: (context, url) => const Center(
+            child: CircularProgressIndicator(),
           ),
-          SizedBox(height: 8.h),
-          Text(
-            model.name,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: context.theme.textTheme.bodyLarge!.copyWith(
-              fontWeight: FontWeight.w400,
-            ),
+          errorWidget: (context, url, error) => const Center(
+            child: Icon(Icons.error),
           ),
-        ],
-      ),
+        ),
+        SizedBox(height: 8.h),
+        Text(
+          model.name,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: context.theme.textTheme.bodyLarge!.copyWith(
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+      ],
     );
   }
 }
