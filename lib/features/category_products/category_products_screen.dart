@@ -23,8 +23,6 @@ class CategoryProductsScreen extends StatelessWidget {
     SubCategory category =
         ModalRoute.of(context)?.settings.arguments as SubCategory;
     CategoryProductsCubit cubit = getIt<CategoryProductsCubit>();
-    // debugPrint(category.name!);
-    // debugPrint(category.id!);
 
     return Scaffold(
       appBar: AppBar(
