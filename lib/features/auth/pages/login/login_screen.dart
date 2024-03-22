@@ -43,11 +43,11 @@ class LoginScreen extends StatelessWidget {
             break;
           case LoginSuccessState():
             {
-              debugPrint("LoginScreen");
-              debugPrint("Success");
-              debugPrint("Token: ${state.user.token}");
               SnackBarService.showSuccessMessage(context, "Welcome Back");
-              Navigator.of(context).pushNamed(PageRouteNames.initial);
+              context.pushNamedAndRemoveUntil(
+                PageRouteNames.initial,
+                predicate: (_) => false,
+              );
             }
             break;
         }
@@ -81,7 +81,7 @@ class LoginScreen extends StatelessWidget {
               SizedBox(height: 20.h),
               TextButton(
                 onPressed: () {
-                  Navigator.of(context).pushNamed(PageRouteNames.signUp);
+                  context.pushNamed(PageRouteNames.signUp);
                 },
                 child: Text(
                   "Don't have an account?\nCreate Account",

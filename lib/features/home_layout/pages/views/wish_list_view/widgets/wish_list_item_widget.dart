@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../../../../../core/config/page_route_names.dart';
 import '../../../../../../core/extensions/extensions.dart';
 import '../../../../../../domain/entities/home/product_entity.dart';
 import '../../../../../widgets/custom_material_button.dart';
@@ -34,17 +35,23 @@ class WishListItemWidget extends StatelessWidget {
             imageUrl: product.imageCover ?? "",
             placeholder: (context, url) => const CircularProgressIndicator(),
             imageBuilder: (context, imageProvider) {
-              return Container(
-                width: 120.w,
-                height: 113.h,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.r),
-                  border: Border.all(
-                    color: context.theme.colorScheme.primary.withOpacity(0.3),
-                    width: 1,
+              return GestureDetector(
+                onTap: () {
+                  context.pushNamed(PageRouteNames.productDetailsScreen,
+                      arguments: product);
+                },
+                child: Container(
+                  width: 120.w,
+                  height: 113.h,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15.r),
+                    border: Border.all(
+                      color: context.theme.colorScheme.primary.withOpacity(0.3),
+                      width: 1,
+                    ),
+                    image: DecorationImage(
+                        image: imageProvider, fit: BoxFit.cover),
                   ),
-                  image:
-                      DecorationImage(image: imageProvider, fit: BoxFit.cover),
                 ),
               );
             },

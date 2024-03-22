@@ -157,8 +157,10 @@ class CustomProductWidget extends StatelessWidget {
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(16.r), topRight: Radius.circular(16.r)),
         child: GestureDetector(
-          onTap: () => context.pushNamed(PageRouteNames.productDetailsScreen,
-              arguments: product),
+          onTap: () => context.pushNamed(
+            PageRouteNames.productDetailsScreen,
+            arguments: product,
+          ),
           child: Stack(
             fit: StackFit.loose,
             children: [
@@ -183,43 +185,43 @@ class CustomProductWidget extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
               ),
-              //   Positioned(
-              //     right: 0,
-              //     child: BlocConsumer<WishListCubit, WishListState>(
-              //       bloc: wishListCubit,
-              //       listener: (context, state) {},
-              //       builder: (context, state) {
-              //         if (state is SuccessState) {
-              //           if (wishListCubit.wishListProductIds
-              //               .contains(product.id)) {
-              //             product.isFavorite = true;
-              //             return buildFavoriteButton(
-              //               context,
-              //               () {
-              //                 wishListCubit
-              //                     .removeProductFromWishList(product.id!);
-              //               },
-              //             );
-              //           } else {
-              //             product.isFavorite = false;
-              //             return buildFavoriteButton(
-              //               context,
-              //               () {
-              //                 wishListCubit.addProductToWishList(product.id!);
-              //               },
-              //             );
-              //           }
-              //         }
-              //         return buildFavoriteButton(
-              //           context,
-              //           () {
-              //             SnackBarService.showErrorMessage(
-              //                 context, "You are not logged in");
-              //           },
-              //         );
-              //       },
-              //     ),
-              //   ),
+              Positioned(
+                right: 0,
+                child: BlocConsumer<WishListCubit, WishListState>(
+                  bloc: wishListCubit,
+                  listener: (context, state) {},
+                  builder: (context, state) {
+                    if (state is SuccessState) {
+                      if (wishListCubit.wishListProductIds
+                          .contains(product.id)) {
+                        product.isFavorite = true;
+                        return buildFavoriteButton(
+                          context,
+                          () {
+                            wishListCubit
+                                .removeProductFromWishList(product.id!);
+                          },
+                        );
+                      } else {
+                        product.isFavorite = false;
+                        return buildFavoriteButton(
+                          context,
+                          () {
+                            wishListCubit.addProductToWishList(product.id!);
+                          },
+                        );
+                      }
+                    }
+                    return buildFavoriteButton(
+                      context,
+                      () {
+                        SnackBarService.showErrorMessage(
+                            context, "You are not logged in");
+                      },
+                    );
+                  },
+                ),
+              ),
             ],
           ),
         ),
