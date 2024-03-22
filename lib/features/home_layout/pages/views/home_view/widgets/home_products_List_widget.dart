@@ -32,14 +32,9 @@ class HomeProductsListWidget extends StatelessWidget {
                   color: context.theme.colorScheme.primary,
                 ),
               ),
-              GestureDetector(
-                onTap: () {
-                  // TODO: Navigate to all categories screen
-                },
-                child: Text(
-                  "View all",
-                  style: context.theme.textTheme.bodySmall,
-                ),
+              Text(
+                "View all",
+                style: context.theme.textTheme.bodySmall,
               ),
             ],
           ).setHorizontalPadding(context, 16.w),
