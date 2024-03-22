@@ -1,5 +1,5 @@
 import 'package:intl/intl.dart';
 
-String formatPrice(num price) {
+String formatNumber(num price) {
   return NumberFormat.decimalPattern('en').format(price);
 }
