@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../../../../../core/config/page_route_names.dart';
 import '../../../../../../core/extensions/extensions.dart';
+import '../../../../../../core/services/number_formatter.dart';
 import '../../../../../../domain/entities/home/product_entity.dart';
 import '../../../../../widgets/custom_material_button.dart';
 import '../manager/wish_list_cubit.dart';
@@ -82,7 +83,7 @@ class WishListItemWidget extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      "EGP ${product.priceAfterDiscount ?? product.price}",
+                      "EGP ${formatNumber(product.priceAfterDiscount ?? product.price!)}",
                       style: context.theme.textTheme.bodyLarge!.copyWith(
                         fontWeight: FontWeight.w400,
                       ),
@@ -91,7 +92,7 @@ class WishListItemWidget extends StatelessWidget {
                     Visibility(
                       visible: product.priceAfterDiscount != null,
                       child: Text(
-                        "EGP ${product.price}",
+                        "EGP ${formatNumber(product.price!)}",
                         style: context.theme.textTheme.bodySmall!.copyWith(
                           fontWeight: FontWeight.w300,
                           decoration: TextDecoration.lineThrough,
