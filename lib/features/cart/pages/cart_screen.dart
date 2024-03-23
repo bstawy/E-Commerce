@@ -26,16 +26,24 @@ class CartScreen extends StatelessWidget {
         ),
         title: const Text("Cart"),
         actions: [
-          GestureDetector(
-            onTap: () {
-              cartCubit.clearCart();
+          BlocBuilder<CartCubit, CartState>(
+            bloc: cartCubit..getCartProducts(),
+            builder: (context, state) {
+              if (state is SuccessState && state.data.products!.isNotEmpty) {
+                return GestureDetector(
+                  onTap: () {
+                    cartCubit.clearCart();
+                  },
+                  child: SvgPicture.asset("assets/icons/delete_icon.svg"),
+                ).setOnlyPadding(context, 0, 10.h, 0, 26.w);
+              }
+              return const SizedBox();
             },
-            child: SvgPicture.asset("assets/icons/delete_icon.svg"),
-          ).setOnlyPadding(context, 0, 10.h, 0, 26.w),
+          ),
         ],
       ),
       body: BlocBuilder<CartCubit, CartState>(
-        bloc: cartCubit..getCartProducts(),
+        bloc: cartCubit,
         builder: (context, state) {
           switch (state) {
             case InitialState():

@@ -110,7 +110,6 @@ class CartCubit extends Cubit<CartState> {
         emit(FailureState(l));
       },
       (r) {
-        emit(ClearCartSuccessState(r));
         getCartProducts();
       },
     );
