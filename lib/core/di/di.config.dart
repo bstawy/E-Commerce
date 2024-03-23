@@ -113,7 +113,7 @@ extension GetItInjectableX on _i1.GetIt {
       environment,
       environmentFilter,
     );
-    gh.singleton<_i3.ApiManager>(() => _i3.ApiManager());
+    gh.singleton<_i3.ApiManager>((() => _i3.ApiManager()));
     gh.factory<_i4.CartRemoteDataSource>(
         () => _i5.CartRemoteDataSourceImpl(gh<_i3.ApiManager>()));
     gh.factory<_i6.CartRepository>(
