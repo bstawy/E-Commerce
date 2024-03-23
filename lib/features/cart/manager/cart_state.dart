@@ -18,11 +18,6 @@ final class AddToCartSuccessState extends CartState {
   AddToCartSuccessState(this.message);
 }
 
-final class ClearCartSuccessState extends CartState {
-  final String message;
-  ClearCartSuccessState(this.message);
-}
-
 final class FailureState extends CartState {
   final ServerFailure serverFailure;
 
