@@ -134,6 +134,10 @@ class CustomProductWidget extends StatelessWidget {
                   context, state.serverFailure.message!);
             } else if (state is cart.SuccessState) {
               EasyLoading.dismiss();
+            } else if (state is cart.UnLoggedUserState) {
+              EasyLoading.dismiss();
+              SnackBarService.showErrorMessage(
+                  context, "Please login to add product to cart");
             }
           },
           child: GestureDetector(
