@@ -14,7 +14,7 @@ import '../../../../../widgets/custom_header_and_search.dart';
 import '../manager/home_cubit.dart';
 import '../widgets/home_grid_widget.dart';
 import '../widgets/home_offers_widget.dart';
-import '../widgets/home_products_list_widget.dart';
+import '../widgets/home_products_List_widget.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
