@@ -27,8 +27,7 @@ class CustomProductWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-            create: (context) => getIt<WishListCubit>()..checkLogging()),
+        BlocProvider(create: (context) => getIt<WishListCubit>()),
         BlocProvider(create: (context) => getIt<cart.CartCubit>()),
       ],
       child: Container(
@@ -193,7 +192,7 @@ class CustomProductWidget extends StatelessWidget {
               Positioned(
                 right: 0,
                 child: BlocConsumer<WishListCubit, WishListState>(
-                  bloc: wishListCubit,
+                  bloc: wishListCubit..checkLogging(),
                   listener: (context, state) {},
                   builder: (context, state) {
                     if (state is SuccessState) {
