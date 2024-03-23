@@ -36,18 +36,17 @@ class RegisterScreen extends StatelessWidget {
             break;
           case RegisterFailureState():
             {
-              debugPrint("Exception: ${state.serverFailure}");
+              EasyLoading.dismiss();
               SnackBarService.showErrorMessage(
                   context, state.serverFailure.message!);
             }
             break;
           case RegisterSuccessState():
             {
-              debugPrint("Success");
-              debugPrint("Token: ${state.user.token}");
+              EasyLoading.dismiss();
               SnackBarService.showSuccessMessage(
                   context, "Account created successfully");
-              Navigator.of(context).pop();
+              context.pop();
             }
             break;
         }
@@ -68,7 +67,7 @@ class RegisterScreen extends StatelessWidget {
               SizedBox(height: 20.h),
               TextButton(
                 onPressed: () {
-                  Navigator.pop(context);
+                  context.pop();
                 },
                 child: Text(
                   "Already have an account? Login",

@@ -139,12 +139,3 @@ class CategoriesView extends StatelessWidget {
     );
   }
 }
-
-/*
-getSubCategoriesOnCategory(context
-                            .read<CategoriesCubit>()
-                            .categories![context
-                                .read<CategoriesCubit>()
-                                .selectedCategoryIndex]
-                            .id!),
-*/

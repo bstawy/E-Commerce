@@ -4,11 +4,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../core/config/page_route_names.dart';
 import '../../core/di/di.dart';
 import '../../core/extensions/extensions.dart';
 import '../../core/services/shimmer_skeleton_service.dart';
 import '../../core/services/snackbar_service.dart';
-import '../../domain/entities/home/category_entity.dart';
 import '../../domain/entities/home/sub_category_entity.dart';
 import '../home_layout/pages/views/wish_list_view/manager/wish_list_cubit.dart'
     as wish_list_cubit;
@@ -23,8 +23,6 @@ class CategoryProductsScreen extends StatelessWidget {
     SubCategory category =
         ModalRoute.of(context)?.settings.arguments as SubCategory;
     CategoryProductsCubit cubit = getIt<CategoryProductsCubit>();
-    // debugPrint(category.name!);
-    // debugPrint(category.id!);
 
     return Scaffold(
       appBar: AppBar(
@@ -35,7 +33,7 @@ class CategoryProductsScreen extends StatelessWidget {
         actions: [
           GestureDetector(
             onTap: () {
-              // TODO: Navigate to cart
+              context.pushNamed(PageRouteNames.cartScreen);
             },
             child: SvgPicture.asset("assets/icons/cart_icon.svg"),
           ).setOnlyPadding(context, 0, 0, 0, 16.w),

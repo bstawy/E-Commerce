@@ -54,7 +54,7 @@ class SnackBarService {
         alignment: Alignment.center,
         child: Text(
           msg,
-          textAlign: TextAlign.start,
+          textAlign: TextAlign.center,
           maxLines: 5,
           overflow: TextOverflow.ellipsis,
           style: theme.textTheme.titleSmall!.copyWith(

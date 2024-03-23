@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../core/extensions/extensions.dart';
+import '../../core/config/page_route_names.dart';
 
 class CustomHeaderAndSearch extends StatelessWidget {
   const CustomHeaderAndSearch({super.key});
@@ -40,33 +41,43 @@ class CustomHeaderAndSearch extends StatelessWidget {
                     border:
                         Border.all(color: context.theme.colorScheme.primary),
                   ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.search_rounded,
-                        color: context.theme.colorScheme.primary,
-                        size: 24.r,
-                      ),
-                      SizedBox(width: 8.w),
-                      Text(
-                        "What do you search for ?",
-                        style: context.theme.textTheme.bodySmall!.copyWith(
-                          color: context.theme.colorScheme.primary
-                              .withOpacity(0.6),
-                          fontWeight: FontWeight.w300,
+                  child: GestureDetector(
+                    onTap: () {
+                      // TODO: Navigate to search screen
+                    },
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.search_rounded,
+                          color: context.theme.colorScheme.primary,
+                          size: 24.r,
                         ),
-                      ),
-                    ],
+                        SizedBox(width: 8.w),
+                        Text(
+                          "What do you search for ?",
+                          style: context.theme.textTheme.bodySmall!.copyWith(
+                            color: context.theme.colorScheme.primary
+                                .withOpacity(0.6),
+                            fontWeight: FontWeight.w300,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-              SvgPicture.asset(
-                "assets/icons/cart_icon.svg",
-                colorFilter: ColorFilter.mode(
-                    context.theme.colorScheme.primary, BlendMode.srcIn),
-                width: 24.w,
-                height: 24.h,
-                fit: BoxFit.contain,
+              GestureDetector(
+                onTap: () {
+                  context.pushNamed(PageRouteNames.cartScreen);
+                },
+                child: SvgPicture.asset(
+                  "assets/icons/cart_icon.svg",
+                  colorFilter: ColorFilter.mode(
+                      context.theme.colorScheme.primary, BlendMode.srcIn),
+                  width: 24.w,
+                  height: 24.h,
+                  fit: BoxFit.contain,
+                ),
               ),
             ],
           ),

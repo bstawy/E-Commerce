@@ -1,14 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../core/config/page_route_names.dart';
 import '../../core/di/di.dart';
 import '../../core/extensions/extensions.dart';
+import '../../core/services/loading_service.dart';
+import '../../core/services/number_formatter.dart';
 import '../../core/services/snackbar_service.dart';
 import '../../domain/entities/home/product_entity.dart';
+import '../cart/manager/cart_cubit.dart' as cart;
 import '../home_layout/pages/views/wish_list_view/manager/wish_list_cubit.dart';
 
 class CustomProductWidget extends StatelessWidget {
@@ -21,81 +25,84 @@ class CustomProductWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<WishListCubit, WishListState>(
-      bloc: getIt<WishListCubit>(),
-      listener: (context, state) {},
-      builder: (context, state) {
-        return Container(
-          width: 190.w,
-          margin: EdgeInsets.only(right: 16.w),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15.r),
-            border: Border.all(
-              color: context.theme.colorScheme.primary.withOpacity(0.3),
-              width: 2,
-            ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+            create: (context) => getIt<WishListCubit>()..checkLogging()),
+        BlocProvider(create: (context) => getIt<cart.CartCubit>()),
+      ],
+      child: Container(
+        width: 190.w,
+        margin: EdgeInsets.only(right: 16.w),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15.r),
+          border: Border.all(
+            color: context.theme.colorScheme.primary.withOpacity(0.3),
+            width: 2,
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              buildHeader(context, context.read<WishListCubit>()),
-              SizedBox(height: 8.h),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    product.title ?? "",
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: context.theme.textTheme.bodyLarge!.copyWith(
-                      color: context.theme.colorScheme.primary,
-                      fontWeight: FontWeight.w400,
-                    ),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            buildHeader(context, context.read<WishListCubit>()),
+            SizedBox(height: 8.h),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  product.title ?? "",
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: context.theme.textTheme.bodyLarge!.copyWith(
+                    color: context.theme.colorScheme.primary,
+                    fontWeight: FontWeight.w400,
                   ),
-                  Text(
-                    product.description ?? "",
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: context.theme.textTheme.bodyLarge!.copyWith(
-                      fontWeight: FontWeight.w400,
-                    ),
+                ),
+                Text(
+                  product.description ?? "",
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: context.theme.textTheme.bodyLarge!.copyWith(
+                    fontWeight: FontWeight.w400,
                   ),
-                  SizedBox(height: 8.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "EGP ${product.priceAfterDiscount ?? product.price}",
-                        style: context.theme.textTheme.bodyLarge!.copyWith(
-                          fontWeight: FontWeight.w400,
+                ),
+                SizedBox(height: 8.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "EGP ${formatNumber(product.priceAfterDiscount ?? product.price!)}",
+                      style: context.theme.textTheme.bodyLarge!.copyWith(
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    //SizedBox(width: 16.w),
+                    Visibility(
+                      visible: product.priceAfterDiscount != null,
+                      child: Text(
+                        "${formatNumber(product.price!)} EGP",
+                        style: context.theme.textTheme.bodySmall!.copyWith(
+                          fontWeight: FontWeight.w300,
+                          decoration: TextDecoration.lineThrough,
                         ),
                       ),
-                      //SizedBox(width: 16.w),
-                      Visibility(
-                        visible: product.priceAfterDiscount != null,
-                        child: Text(
-                          "${product.price} EGP",
-                          style: context.theme.textTheme.bodySmall!.copyWith(
-                            fontWeight: FontWeight.w300,
-                            decoration: TextDecoration.lineThrough,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 8.h),
-                  buildFooter(context),
-                ],
-              ).setHorizontalPadding(context, 8.w),
-            ],
-          ),
-        );
-      },
+                    ),
+                  ],
+                ),
+                SizedBox(height: 8.h),
+                buildFooter(context),
+              ],
+            ).setHorizontalPadding(context, 8.w),
+          ],
+        ),
+      ),
     );
   }
 
   Widget buildFooter(BuildContext context) {
+    cart.CartCubit cartCubit = getIt<cart.CartCubit>();
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -112,10 +119,33 @@ class CustomProductWidget extends StatelessWidget {
                 .setHorizontalPadding(context, 4.w),
           ],
         ),
-        Icon(
-          Icons.add_circle,
-          size: 35.r,
-          color: context.theme.colorScheme.primary,
+        BlocListener<cart.CartCubit, cart.CartState>(
+          bloc: cartCubit,
+          listener: (context, state) {
+            if (state is cart.LoadingState) {
+              configureEasyLoading();
+              EasyLoading.show();
+            } else if (state is cart.AddToCartSuccessState) {
+              EasyLoading.dismiss();
+              SnackBarService.showSuccessMessage(context, state.message);
+            } else if (state is cart.FailureState) {
+              EasyLoading.dismiss();
+              SnackBarService.showErrorMessage(
+                  context, state.serverFailure.message!);
+            } else if (state is cart.SuccessState) {
+              EasyLoading.dismiss();
+            }
+          },
+          child: GestureDetector(
+            onTap: () {
+              cartCubit.addProductToCart(product.id!);
+            },
+            child: Icon(
+              Icons.add_circle,
+              size: 35.r,
+              color: context.theme.colorScheme.primary,
+            ),
+          ),
         ),
       ],
     );
@@ -128,8 +158,10 @@ class CustomProductWidget extends StatelessWidget {
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(16.r), topRight: Radius.circular(16.r)),
         child: GestureDetector(
-          onTap: () => context.pushNamed(PageRouteNames.productDetailsScreen,
-              arguments: product),
+          onTap: () => context.pushNamed(
+            PageRouteNames.productDetailsScreen,
+            arguments: product,
+          ),
           child: Stack(
             fit: StackFit.loose,
             children: [

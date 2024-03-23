@@ -128,32 +128,33 @@ class _ProductImagesCarouselState extends State<ProductImagesCarousel> {
   Widget buildDotsIndicator(Product product, BuildContext context) {
     return Positioned(
       bottom: 0,
-      width: MediaQuery.sizeOf(context).width,
-      child: Container(
-        margin: EdgeInsets.symmetric(vertical: 8.h, horizontal: 175.w),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16.r),
-          color: Colors.white,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            for (int i = 0; i < product.images!.length; i++)
-              Container(
-                width: 10.w,
-                height: 10.h,
-                margin: EdgeInsets.all(4.r),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: context.theme.colorScheme.primary,
+      child: IntrinsicWidth(
+        child: Container(
+          margin: EdgeInsets.symmetric(vertical: 8.h, horizontal: 175.w),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16.r),
+            color: Colors.white,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              for (int i = 0; i < product.images!.length; i++)
+                Container(
+                  width: 10.w,
+                  height: 10.h,
+                  margin: EdgeInsets.all(4.r),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: context.theme.colorScheme.primary,
+                    ),
+                    color: currentPageIndex == i
+                        ? context.theme.colorScheme.primary
+                        : Colors.transparent,
                   ),
-                  color: currentPageIndex == i
-                      ? context.theme.colorScheme.primary
-                      : Colors.transparent,
                 ),
-              ),
-          ],
+            ],
+          ),
         ),
       ),
     );

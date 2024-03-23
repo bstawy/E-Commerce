@@ -3,7 +3,7 @@ import 'package:injectable/injectable.dart';
 
 import '../../core/error/server_failure.dart';
 import '../entities/home/product_entity.dart';
-import '../repository/category_products_repository/category_products_repository.dart';
+import '../repository/category_products/category_products_repository.dart';
 
 @injectable
 class GetCategoryProductsUseCase {
