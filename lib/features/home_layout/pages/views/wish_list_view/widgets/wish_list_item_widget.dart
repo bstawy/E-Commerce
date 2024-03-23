@@ -1,13 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:e_commerce/core/services/loading_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../../../../core/config/page_route_names.dart';
+import '../../../../../../core/di/di.dart';
 import '../../../../../../core/extensions/extensions.dart';
 import '../../../../../../core/services/number_formatter.dart';
+import '../../../../../../core/services/snackbar_service.dart';
 import '../../../../../../domain/entities/home/product_entity.dart';
+import '../../../../../cart/manager/cart_cubit.dart' as cart;
 import '../../../../../widgets/custom_material_button.dart';
 import '../manager/wish_list_cubit.dart';
 
@@ -18,6 +23,8 @@ class WishListItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cart.CartCubit cartCubit = getIt<cart.CartCubit>();
+
     return Container(
       width: MediaQuery.sizeOf(context).width,
       height: 113.h,
@@ -135,16 +142,40 @@ class WishListItemWidget extends StatelessWidget {
                       SvgPicture.asset("assets/icons/favorite_filled_icon.svg"),
                 ),
               ),
-              CustomMaterialButton(
-                title: "Add to Cart",
-                titleStyle: context.theme.textTheme.bodySmall!.copyWith(
-                  color: context.theme.colorScheme.background,
+              BlocListener<cart.CartCubit, cart.CartState>(
+                bloc: cartCubit,
+                listener: (context, state) {
+                  if (state is cart.LoadingState) {
+                    configureEasyLoading();
+                    EasyLoading.show();
+                  } else if (state is cart.AddToCartSuccessState) {
+                    EasyLoading.dismiss();
+                    SnackBarService.showSuccessMessage(context, state.message);
+                  } else if (state is cart.FailureState) {
+                    EasyLoading.dismiss();
+                    SnackBarService.showErrorMessage(
+                        context, state.serverFailure.message!);
+                  } else if (state is cart.SuccessState) {
+                    EasyLoading.dismiss();
+                  } else if (state is cart.UnLoggedUserState) {
+                    EasyLoading.dismiss();
+                    SnackBarService.showErrorMessage(
+                        context, "Please login to add product to cart");
+                  }
+                },
+                child: CustomMaterialButton(
+                  title: "Add to Cart",
+                  titleStyle: context.theme.textTheme.bodySmall!.copyWith(
+                    color: context.theme.colorScheme.background,
+                  ),
+                  backgroundColor: context.theme.colorScheme.primary,
+                  height: 36.h,
+                  minWidth: 75.w,
+                  padding: 9.r,
+                  onClicked: () {
+                    cartCubit.addProductToCart(product.id!);
+                  },
                 ),
-                backgroundColor: context.theme.colorScheme.primary,
-                height: 36.h,
-                minWidth: 75.w,
-                padding: 9.r,
-                onClicked: () {},
               ),
             ],
           ).setOnlyPadding(context, 0, 0, 0, 8.w),
