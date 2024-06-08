@@ -34,7 +34,7 @@ class LoginRequiredWidget extends StatelessWidget {
           backgroundColor: context.theme.colorScheme.primary,
           title: "Login",
           titleStyle: context.theme.textTheme.titleMedium!.copyWith(
-            color: context.theme.colorScheme.background,
+            color: context.theme.colorScheme.surface,
           ),
         ).setHorizontalPadding(context, 100.w),
       ],

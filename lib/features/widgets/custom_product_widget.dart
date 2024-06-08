@@ -245,7 +245,7 @@ class CustomProductWidget extends StatelessWidget {
         padding: EdgeInsets.all(3.r),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: context.theme.colorScheme.background,
+          color: context.theme.colorScheme.surface,
           boxShadow: [
             BoxShadow(
                 offset: const Offset(0, 5),

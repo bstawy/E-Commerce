@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:e_commerce/core/services/loading_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -9,6 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import '../../../../../../core/config/page_route_names.dart';
 import '../../../../../../core/di/di.dart';
 import '../../../../../../core/extensions/extensions.dart';
+import '../../../../../../core/services/loading_service.dart';
 import '../../../../../../core/services/number_formatter.dart';
 import '../../../../../../core/services/snackbar_service.dart';
 import '../../../../../../domain/entities/home/product_entity.dart';
@@ -129,7 +129,7 @@ class WishListItemWidget extends StatelessWidget {
                   padding: EdgeInsets.all(3.r),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: context.theme.colorScheme.background,
+                    color: context.theme.colorScheme.surface,
                     boxShadow: [
                       BoxShadow(
                           offset: const Offset(0, 5),
@@ -166,7 +166,7 @@ class WishListItemWidget extends StatelessWidget {
                 child: CustomMaterialButton(
                   title: "Add to Cart",
                   titleStyle: context.theme.textTheme.bodySmall!.copyWith(
-                    color: context.theme.colorScheme.background,
+                    color: context.theme.colorScheme.surface,
                   ),
                   backgroundColor: context.theme.colorScheme.primary,
                   height: 36.h,

@@ -8,8 +8,8 @@ import '../../../../../../core/error/server_failure.dart';
 import '../../../../../../core/services/loading_service.dart';
 import '../../../../../../domain/entities/home/product_entity.dart';
 import '../../../../../../domain/use_case/add_product_to_wish_list_use_case.dart';
-import '../../../../../../domain/use_case/remove_product_from_wish_list_use_case.dart';
 import '../../../../../../domain/use_case/get_wish_list_use_case.dart';
+import '../../../../../../domain/use_case/remove_product_from_wish_list_use_case.dart';
 
 part 'wish_list_state.dart';
 

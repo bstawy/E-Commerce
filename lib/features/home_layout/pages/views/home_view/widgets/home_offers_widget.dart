@@ -75,7 +75,7 @@ class _HomeOffersWidgetState extends State<HomeOffersWidget> {
               borderRadius: BorderRadius.circular(5),
               color: i == _currentPageIndex
                   ? context.theme.colorScheme.primary
-                  : context.theme.colorScheme.background,
+                  : context.theme.colorScheme.surface,
             ),
           ),
       ],

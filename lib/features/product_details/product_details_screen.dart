@@ -148,12 +148,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     shape: BoxShape.circle,
                     border: Border.all(
                       width: 2,
-                      color: context.theme.colorScheme.background,
+                      color: context.theme.colorScheme.surface,
                     ),
                   ),
                   child: Icon(
                     Icons.remove,
-                    color: context.theme.colorScheme.background,
+                    color: context.theme.colorScheme.surface,
                     size: 20.r,
                   ),
                 ),
@@ -172,12 +172,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     shape: BoxShape.circle,
                     border: Border.all(
                       width: 2,
-                      color: context.theme.colorScheme.background,
+                      color: context.theme.colorScheme.surface,
                     ),
                   ),
                   child: Icon(
                     Icons.add,
-                    color: context.theme.colorScheme.background,
+                    color: context.theme.colorScheme.surface,
                     size: 20.r,
                   ),
                 ),
@@ -241,7 +241,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   overflow: TextOverflow.ellipsis,
                   style: context.theme.textTheme.bodyLarge!.copyWith(
                     color: i == 2
-                        ? context.theme.colorScheme.background
+                        ? context.theme.colorScheme.surface
                         : context.theme.colorScheme.onPrimary,
                     fontWeight: FontWeight.w400,
                   ),
@@ -350,7 +350,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             child: CustomMaterialButton(
               title: "Add to cart",
               titleStyle: context.theme.textTheme.titleSmall!.copyWith(
-                color: context.theme.colorScheme.background,
+                color: context.theme.colorScheme.surface,
               ),
               backgroundColor: context.theme.colorScheme.primary,
               borderRadius: 20.r,

@@ -56,7 +56,7 @@ class LoginScreen extends StatelessWidget {
         resizeToAvoidBottomInset: true,
         backgroundColor: context.theme.colorScheme.primary,
         appBar: AppBar(
-          leading: BackButton(color: context.theme.colorScheme.background),
+          leading: BackButton(color: context.theme.colorScheme.surface),
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -67,13 +67,13 @@ class LoginScreen extends StatelessWidget {
               Text(
                 "Welcome Back To Route",
                 style: context.theme.textTheme.titleMedium!.copyWith(
-                  color: context.theme.colorScheme.background,
+                  color: context.theme.colorScheme.surface,
                 ),
               ),
               Text(
                 "Please sign in with your email",
                 style: context.theme.textTheme.bodyMedium!.copyWith(
-                  color: context.theme.colorScheme.background,
+                  color: context.theme.colorScheme.surface,
                 ),
               ),
               SizedBox(height: 46.h),
@@ -87,7 +87,7 @@ class LoginScreen extends StatelessWidget {
                   "Don't have an account?\nCreate Account",
                   textAlign: TextAlign.center,
                   style: context.theme.textTheme.bodyLarge!.copyWith(
-                    color: context.theme.colorScheme.background,
+                    color: context.theme.colorScheme.surface,
                   ),
                 ),
               ),

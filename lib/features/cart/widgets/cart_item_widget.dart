@@ -104,7 +104,7 @@ class CartItemWidget extends StatelessWidget {
                   padding: EdgeInsets.all(3.r),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: context.theme.colorScheme.background,
+                    color: context.theme.colorScheme.surface,
                     boxShadow: [
                       BoxShadow(
                           offset: const Offset(0, 5),
@@ -140,12 +140,12 @@ class CartItemWidget extends StatelessWidget {
                           shape: BoxShape.circle,
                           border: Border.all(
                             width: 2,
-                            color: context.theme.colorScheme.background,
+                            color: context.theme.colorScheme.surface,
                           ),
                         ),
                         child: Icon(
                           Icons.remove,
-                          color: context.theme.colorScheme.background,
+                          color: context.theme.colorScheme.surface,
                           size: 20.r,
                         ),
                       ),
@@ -166,12 +166,12 @@ class CartItemWidget extends StatelessWidget {
                           shape: BoxShape.circle,
                           border: Border.all(
                             width: 2,
-                            color: context.theme.colorScheme.background,
+                            color: context.theme.colorScheme.surface,
                           ),
                         ),
                         child: Icon(
                           Icons.add,
-                          color: context.theme.colorScheme.background,
+                          color: context.theme.colorScheme.surface,
                           size: 20.r,
                         ),
                       ),

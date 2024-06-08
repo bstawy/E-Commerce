@@ -55,7 +55,7 @@ class RegisterScreen extends StatelessWidget {
         resizeToAvoidBottomInset: true,
         backgroundColor: context.theme.colorScheme.primary,
         appBar: AppBar(
-          leading: BackButton(color: context.theme.colorScheme.background),
+          leading: BackButton(color: context.theme.colorScheme.surface),
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -73,7 +73,7 @@ class RegisterScreen extends StatelessWidget {
                   "Already have an account? Login",
                   textAlign: TextAlign.center,
                   style: context.theme.textTheme.bodyLarge!.copyWith(
-                    color: context.theme.colorScheme.background,
+                    color: context.theme.colorScheme.surface,
                   ),
                 ),
               ),
